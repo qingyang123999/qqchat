@@ -15,7 +15,6 @@ func Router() *gin.Engine {
 
 	ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
-		ginSwagger.URL("http://localhost:8080/swagger/doc.json"),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 	)
 	return router
