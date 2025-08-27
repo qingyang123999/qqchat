@@ -13,9 +13,11 @@ func Router() *gin.Engine {
 	router.GET("/index", service.GetIndex)
 	router.GET("/api/v1/example/helloworld", service.Helloworld)
 
+	// swagger 的所有配置;
 	ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
 		ginSwagger.DefaultModelsExpandDepth(-1),
 	)
+
 	return router
 }
