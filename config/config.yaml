@@ -8,3 +8,6 @@ APP_ENV: dev
 Mysql:
   dns: root:DHHdfghdfg@578571.@tcp(124.220.164.90:3306)/qqchat?charset=utf8mb4&parseTime=True&loc=Local
   LOG_DIR: logs/sql
+
+Logger:
+  LOG_DIR: logs/service
