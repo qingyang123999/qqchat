@@ -2,11 +2,21 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"qqchat/service"
 )
 
 func Router() *gin.Engine {
 	router := gin.Default()
+
 	router.GET("/index", service.GetIndex)
+	router.GET("/api/v1/example/helloworld", service.Helloworld)
+
+	ginSwagger.WrapHandler(
+		swaggerfiles.Handler,
+		ginSwagger.URL("http://localhost:8080/swagger/doc.json"),
+		ginSwagger.DefaultModelsExpandDepth(-1),
+	)
 	return router
 }

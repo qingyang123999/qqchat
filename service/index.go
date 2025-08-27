@@ -2,10 +2,23 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"qqchat/models"
 	"qqchat/utils"
 	"time"
 )
+
+// @Summary 接口名称
+// @Schemes
+// @Description 接口说明
+// @Tags 目录名称
+// @Accept json
+// @Produce json
+// @Success 200 {string} helloworld
+// @Router /api/v1/example/helloworld [get]
+func Helloworld(g *gin.Context) {
+	g.JSON(http.StatusOK, "helloworld")
+}
 
 func GetIndex(ctx *gin.Context) {
 

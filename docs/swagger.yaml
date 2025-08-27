@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /api/v1/example/helloworld:
+    get:
+      consumes:
+      - application/json
+      description: 接口说明
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 接口名称
+      tags:
+      - 目录名称
+swagger: "2.0"
