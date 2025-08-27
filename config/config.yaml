@@ -2,5 +2,9 @@
 #Host: 0.0.0.0
 #Port: 8888
 
+APP_ENV: dev
+
+
 Mysql:
   dns: root:DHHdfghdfg@578571.@tcp(124.220.164.90:3306)/qqchat?charset=utf8mb4&parseTime=True&loc=Local
+  LOG_DIR: logs/sql
