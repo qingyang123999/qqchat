@@ -8,18 +8,30 @@ import (
 	"time"
 )
 
+// @Tags 目录名称
 // @Summary 接口名称
 // @Schemes
 // @Description 接口说明
-// @Tags 目录名称
 // @Accept json
 // @Produce json
-// @Success 200 {string} helloworld
 // @Router /api/v1/example/helloworld [get]
+// @Param data body models.AAAA true "请求参数  @Param [参数名] [参数类型] [数据类型] [是否必填] [描述信息(可选)]"
+// @Success 200 {string} helloworld
+// @Failure 500  {string} helloworld
 func Helloworld(g *gin.Context) {
 	g.JSON(http.StatusOK, "helloworld")
 }
 
+// @Tags 测试目录
+// @Summary 测试接口
+// @Schemes
+// @Description 用于测试
+// @Accept json
+// @Produce json
+// @Router /index [get]
+// @Param data body models.AAAA true "请求参数"
+// @Success   200  {object}  models.AAAA
+// @Failure   500  {object}  models.AAAA
 func GetIndex(ctx *gin.Context) {
 
 	model := models.UserBasic{

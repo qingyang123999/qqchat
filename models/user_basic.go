@@ -28,3 +28,8 @@ type UserBasic struct {
 func (UserBasic) TableName() string {
 	return "user_basic"
 }
+
+type AAAA struct {
+	Id       uint64 `gorm:"column:id;size:64"             json:"id"`
+	Username string `gorm:"column:username;size:32"       json:"username"`
+}

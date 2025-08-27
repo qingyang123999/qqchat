@@ -1,3 +1,11 @@
+definitions:
+  models.AAAA:
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -6,6 +14,13 @@ paths:
       consumes:
       - application/json
       description: 接口说明
+      parameters:
+      - description: 请求参数  @Param [参数名] [参数类型] [数据类型] [是否必填] [描述信息(可选)]
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.AAAA'
       produces:
       - application/json
       responses:
@@ -13,7 +28,37 @@ paths:
           description: OK
           schema:
             type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
       summary: 接口名称
       tags:
       - 目录名称
+  /index:
+    get:
+      consumes:
+      - application/json
+      description: 用于测试
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.AAAA'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AAAA'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.AAAA'
+      summary: 测试接口
+      tags:
+      - 测试目录
 swagger: "2.0"
