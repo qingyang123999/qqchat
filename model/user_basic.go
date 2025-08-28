@@ -38,7 +38,7 @@ type UserIdRequest struct {
 	ID uint64 `json:"id" form:"id" binding:"required"`
 }
 type UpdateUserRequest struct {
-	ID            uint64 `json:"id"             form:"id"            binding:"required,min=5,max=20,alphanum,id"`
+	ID            uint64 `json:"id"             form:"id"            binding:"required"`
 	Username      string `json:"username"       form:"username"      binding:"omitempty,min=2,max=20,alphanum"`
 	Password      string `json:"password"       form:"password"      binding:"omitempty,min=8,max=64,containsany=!@#$%^&*"`
 	Phone         string `json:"phone"          form:"phone"         binding:"omitempty,mobile"`
