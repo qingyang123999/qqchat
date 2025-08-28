@@ -2,13 +2,14 @@ package common
 
 import (
 	"bytes"
+	"database/sql/driver"
 	"encoding/json"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 type RequestParams struct {
@@ -78,22 +79,47 @@ func GetPageOffset(page int, pageSize int) int {
 	}
 }
 
-type CustomTime struct{ time.Time }
-
-func (ct *CustomTime) UnmarshalJSON(b []byte) error {
-	value := strings.Trim(string(b), `"`)
-	if value == "" || value == "null" {
-		return nil
-	}
-	t, err := time.Parse("2006-01-02 15:04:05", value)
-	if err != nil {
-		return err
-	}
-	ct.Time = t
-	return nil
+// 自定义时间类型，用于JSON序列化时格式化时间  2006-01-02 15:04:05这种格式
+type CustomTime struct {
+	time.Time
 }
 
-// 使用示例 请求验证
-//type CreateUserRequest struct {
-//	// ...     HeartbeatTime *CustomTime `json:"heartbeatTime" form:"heartbeatTime"`     // 其他时间字段同理 }
-//
+// 实现 MarshalJSON 接口来自定义时间格式
+func (t CustomTime) MarshalJSON() ([]byte, error) {
+	formatted := fmt.Sprintf("\"%s\"", t.Time.Format("2006-01-02 15:04:05"))
+	return []byte(formatted), nil
+}
+
+// 实现 Valuer 接口用于将自定义时间类型存储到数据库
+func (t CustomTime) Value() (driver.Value, error) {
+	return t.Time, nil
+}
+
+// 实现 Scanner 接口用于从数据库读取自定义时间类型
+func (t *CustomTime) Scan(value interface{}) error {
+	if value == nil {
+		t.Time = time.Time{}
+		return nil
+	}
+
+	if v, ok := value.(time.Time); ok {
+		t.Time = v
+		return nil
+	}
+
+	return fmt.Errorf("cannot scan %T into CustomTime", value)
+}
+
+// NewCustomTime 创建一个新的CustomTime实例
+// 使用时：
+// LoginTime:     models.NewCustomTime(time.Now()),
+func NewCustomTime(t time.Time) CustomTime {
+	return CustomTime{Time: t}
+}
+
+// NewCustomTimeFromNow 创建一个表示当前时间的CustomTime实例
+// 使用时，你可以这样写：
+// LoginTime:     models.NewCustomTimeFromNow(),
+func NewCustomTimeFromNow() CustomTime {
+	return CustomTime{Time: time.Now()}
+}
