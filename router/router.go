@@ -30,7 +30,7 @@ func Router() *gin.Engine {
 		userGroup.GET("/user_basic/getUsersList", service.ApiService.UserBasic.GetUsersList)
 		userGroup.GET("/user_basic/getUserInfo", service.ApiService.UserBasic.GetUsersInfo)
 		userGroup.POST("/user_basic/updateUser", service.ApiService.UserBasic.UpdateUser)
-		userGroup.DELETE("/user_basic/deleteUser", service.ApiService.UserBasic.DeleteUser)
+		userGroup.GET("/user_basic/deleteUser", service.ApiService.UserBasic.DeleteUser)
 	}
 
 	// swagger 的所有配置;

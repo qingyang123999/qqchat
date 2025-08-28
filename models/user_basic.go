@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"qqchat/common"
 	"qqchat/model"
@@ -11,7 +12,7 @@ var UserBasicModel = UserBasic{}
 
 type UserBasic struct {
 	gorm.Model
-	ID            uint64            `gorm:"column:id;size:64"             json:"id"`
+	ID            uint64            `gorm:"primaryKey;column:id;size:64"  json:"id"`
 	Username      string            `gorm:"column:username;size:32"       json:"username"`
 	Password      string            `gorm:"column:password;size:64"       json:"password"`
 	Phone         string            `gorm:"column:phone;size:64"          json:"phone"`
@@ -170,10 +171,26 @@ func (ub *UserBasic) UpdateUser(req *model.UpdateUserRequest) (err error) {
 }
 
 func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
-	result := common.Db.Delete(&UserBasic{}, req.ID)
+	//// 创建一个带有主键的实例，让 GORM 知道要删除哪个记录
+	//user := UserBasic{}
+	//user.ID = req.ID
+	//
+	//result := common.Db.Delete(&user)
+	//if result.Error != nil {
+	//	return result.Error
+	//}
+
+	// 使用Model指定模型，然后通过主键ID删除
+	result := common.Db.Model(&UserBasic{}).Where("id = ?", req.ID).Delete(&UserBasic{})
 	if result.Error != nil {
 		return result.Error
 	}
+
+	// 检查是否有记录被删除
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("未找到ID为%d的用户记录", req.ID)
+	}
+
 	return nil
 }
 
