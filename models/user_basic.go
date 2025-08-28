@@ -34,7 +34,49 @@ func (ub *UserBasic) TableName() string {
 }
 
 func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) error {
-	result := common.Db.Create(&req)
+	// 将字符串时间转换为time.Time
+	var loginTime, heartbeatTime, logoutTime time.Time
+	var err error
+
+	if req.LoginTime != "" {
+		loginTime, err = time.Parse("2006-01-02 15:04:05", req.LoginTime)
+		if err != nil {
+			return err
+		}
+	}
+
+	if req.HeartbeatTime != "" {
+		heartbeatTime, err = time.Parse("2006-01-02 15:04:05", req.HeartbeatTime)
+		if err != nil {
+			return err
+		}
+	}
+
+	if req.LogoutTime != "" {
+		logoutTime, err = time.Parse("2006-01-02 15:04:05", req.LogoutTime)
+		if err != nil {
+			return err
+		}
+	}
+
+	// 创建数据库模型对象
+	userModel := &UserBasic{
+		Id:            0, // 让数据库自动生成ID
+		Username:      req.Username,
+		Password:      req.Password,
+		Phone:         req.Phone,
+		Email:         req.Email,
+		Identity:      req.Identity,
+		ClientIp:      req.ClientIp,
+		ClientPort:    req.ClientPort,
+		LoginTime:     loginTime,
+		HeartbeatTime: heartbeatTime,
+		LogoutTime:    logoutTime,
+		IsLogout:      req.IsLogout,
+		DeviceInfo:    req.DeviceInfo,
+	}
+
+	result := common.Db.Create(userModel)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -58,7 +100,38 @@ func (ub *UserBasic) GetUsersInfo(req *model.UserIdRequest) (err error, userInfo
 }
 
 func (ub *UserBasic) UpdateUser(req *model.UpdateUserRequest) (err error) {
-	result := common.Db.Model(&ub).Where("id=?", req.ID).Updates(req)
+	// 将字符串时间转换为time.Time
+	updates := map[string]interface{}{
+		"Username":   req.Username,
+		"Password":   req.Password,
+		"Phone":      req.Phone,
+		"Email":      req.Email,
+		"Identity":   req.Identity,
+		"ClientIp":   req.ClientIp,
+		"ClientPort": req.ClientPort,
+		"IsLogout":   req.IsLogout,
+		"DeviceInfo": req.DeviceInfo,
+	}
+
+	if req.LoginTime != "" {
+		if loginTime, err := time.Parse("2006-01-02 15:04:05", req.LoginTime); err == nil {
+			updates["LoginTime"] = loginTime
+		}
+	}
+
+	if req.HeartbeatTime != "" {
+		if heartbeatTime, err := time.Parse("2006-01-02 15:04:05", req.HeartbeatTime); err == nil {
+			updates["HeartbeatTime"] = heartbeatTime
+		}
+	}
+
+	if req.LogoutTime != "" {
+		if logoutTime, err := time.Parse("2006-01-02 15:04:05", req.LogoutTime); err == nil {
+			updates["LogoutTime"] = logoutTime
+		}
+	}
+
+	result := common.Db.Model(&UserBasic{}).Where("id=?", req.ID).Updates(updates)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -66,7 +139,7 @@ func (ub *UserBasic) UpdateUser(req *model.UpdateUserRequest) (err error) {
 }
 
 func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
-	result := common.Db.Delete(&req)
+	result := common.Db.Delete(&UserBasic{}, req.ID)
 	if result.Error != nil {
 		return result.Error
 	}
