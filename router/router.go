@@ -29,7 +29,7 @@ func Router() *gin.Engine {
 		userGroup.POST("/user_basic/createUser", service.ApiService.UserBasic.CreateUser)
 		userGroup.GET("/user_basic/getUsersList", service.ApiService.UserBasic.GetUsersList)
 		userGroup.GET("/user_basic/getUserInfo", service.ApiService.UserBasic.GetUsersInfo)
-		userGroup.PUT("/user_basic/updateUser", service.ApiService.UserBasic.UpdateUser)
+		userGroup.POST("/user_basic/updateUser", service.ApiService.UserBasic.UpdateUser)
 		userGroup.DELETE("/user_basic/deleteUser", service.ApiService.UserBasic.DeleteUser)
 	}
 
