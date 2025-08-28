@@ -398,7 +398,7 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 5
+                    "minLength": 2
                 }
             }
         },
@@ -455,7 +455,7 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 5
+                    "minLength": 2
                 }
             }
         },
@@ -531,7 +531,7 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 5
+                    "minLength": 2
                 }
             }
         },

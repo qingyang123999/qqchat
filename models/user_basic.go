@@ -24,6 +24,8 @@ type UserBasic struct {
 	LogoutTime    common.CustomTime `gorm:"column:logout_time"            json:"logoutTime"`
 	IsLogout      int               `gorm:"column:is_logout;size:64"      json:"isLogout"`
 	DeviceInfo    string            `gorm:"column:device_info;size:64"    json:"deviceInfo"`
+	CreatedAt     common.CustomTime `gorm:"column:created_at"             json:"createdAtt"`
+	UpdatedAt     common.CustomTime `gorm:"column:updated_at"             json:"updatedAt"`
 }
 
 // 设置表名称  默认的表明会带s  链接表名会变成users

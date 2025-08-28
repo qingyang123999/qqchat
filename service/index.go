@@ -6,7 +6,6 @@ import (
 	"qqchat/common"
 	"qqchat/model"
 	"qqchat/models"
-	"time"
 )
 
 // @Tags 目录名称
@@ -41,15 +40,13 @@ func GetIndex(ctx *gin.Context) {
 		Phone:         "15874894579",
 		Email:         "11435345@qq.com",
 		Identity:      "dfdgdfgsd",
-		ClientIp:      "125.22.00.123",
+		ClientIP:      "125.22.00.123",
 		ClientPort:    "80",
 		LoginTime:     common.NewCustomTimeFromNow(),
 		HeartbeatTime: common.NewCustomTimeFromNow(),
 		LogoutTime:    common.NewCustomTimeFromNow(),
 		IsLogout:      1,
 		DeviceInfo:    "设备信息1",
-		CreatedAt:     time.Now(),
-		UpdatedAt:     time.Now(),
 	}
 
 	err := common.Db.Create(&model).Error
