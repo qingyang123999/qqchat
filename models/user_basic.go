@@ -85,7 +85,37 @@ func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) (err error) {
 }
 
 func (ub *UserBasic) GetUsersList(req *model.GetUsersListRequest) (err error, users []UserBasic) {
-	result := common.Db.Where(req).Limit(req.PageSize).Offset(common.GetPageOffset(req.Page, req.PageSize)).Scan(&users)
+	// 构建查询条件，排除分页字段
+	query := common.Db
+
+	// 根据请求参数动态构建查询条件
+	if req.Username != "" {
+		query = query.Where("username = ?", req.Username)
+	}
+	if req.Phone != "" {
+		query = query.Where("phone = ?", req.Phone)
+	}
+	if req.Email != "" {
+		query = query.Where("email = ?", req.Email)
+	}
+	if req.Identity != "" {
+		query = query.Where("identity = ?", req.Identity)
+	}
+	if req.ClientIp != "" {
+		query = query.Where("client_ip = ?", req.ClientIp)
+	}
+	if req.ClientPort != "" {
+		query = query.Where("client_port = ?", req.ClientPort)
+	}
+	if req.IsLogout != 0 {
+		query = query.Where("is_logout = ?", req.IsLogout)
+	}
+	if req.DeviceInfo != "" {
+		query = query.Where("device_info = ?", req.DeviceInfo)
+	}
+
+	// 执行查询
+	result := query.Limit(req.PageSize).Offset(common.GetPageOffset(req.Page, req.PageSize)).Find(&users)
 	if result.Error != nil {
 		return result.Error, nil
 	}
