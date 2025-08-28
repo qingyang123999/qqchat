@@ -5,8 +5,8 @@ import (
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"qqchat/common"
+	"qqchat/common/qqlog"
 	"qqchat/service"
-	"qqchat/utils/qqlog"
 )
 
 func Router() *gin.Engine {

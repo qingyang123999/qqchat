@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
-	"qqchat/utils/qqlog"
+	"qqchat/common/qqlog"
 )
 
 type Response struct {

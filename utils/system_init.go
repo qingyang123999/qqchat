@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"qqchat/common"
-	"qqchat/utils/qqlog"
+	"qqchat/common/qqlog"
 	"time"
 )
 
