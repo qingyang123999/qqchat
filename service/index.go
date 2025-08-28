@@ -6,7 +6,6 @@ import (
 	"qqchat/common"
 	"qqchat/model"
 	"qqchat/models"
-	"qqchat/utils"
 	"time"
 )
 
@@ -53,7 +52,7 @@ func GetIndex(ctx *gin.Context) {
 		UpdatedAt:     time.Now(),
 	}
 
-	err := utils.Db.Create(&model).Error
+	err := common.Db.Create(&model).Error
 	if err != nil {
 		err = nil
 		return

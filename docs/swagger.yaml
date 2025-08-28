@@ -9,6 +9,86 @@ definitions:
       success:
         type: boolean
     type: object
+  model.CreateUserRequest:
+    properties:
+      clientIp:
+        type: string
+      clientPort:
+        type: string
+      deviceInfo:
+        maxLength: 256
+        type: string
+      email:
+        type: string
+      heartbeatTime:
+        type: string
+      identity:
+        type: string
+      isLogout:
+        enum:
+        - 0
+        - 1
+        type: integer
+      loginTime:
+        type: string
+      logoutTime:
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      username:
+        maxLength: 20
+        minLength: 5
+        type: string
+    required:
+    - email
+    - password
+    - phone
+    - username
+    type: object
+  model.GetUsersListRequest:
+    properties:
+      clientIp:
+        type: string
+      clientPort:
+        type: string
+      deviceInfo:
+        maxLength: 256
+        type: string
+      email:
+        type: string
+      heartbeatTime:
+        type: string
+      identity:
+        type: string
+      isLogout:
+        enum:
+        - 0
+        - 1
+        type: integer
+      loginTime:
+        type: string
+      logoutTime:
+        type: string
+      page:
+        minimum: 1
+        type: integer
+      pageSize:
+        minimum: 1
+        type: integer
+      phone:
+        type: string
+      username:
+        maxLength: 20
+        minLength: 5
+        type: string
+    required:
+    - page
+    - pageSize
+    type: object
   model.LoginRequest:
     properties:
       password:
@@ -22,6 +102,54 @@ definitions:
     - password
     - username
     type: object
+  model.UpdateUserRequest:
+    properties:
+      clientIp:
+        type: string
+      clientPort:
+        type: string
+      deviceInfo:
+        maxLength: 256
+        type: string
+      email:
+        type: string
+      heartbeatTime:
+        type: string
+      id:
+        maximum: 20
+        minimum: 5
+        type: integer
+      identity:
+        type: string
+      isLogout:
+        enum:
+        - 0
+        - 1
+        type: integer
+      loginTime:
+        type: string
+      logoutTime:
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+      phone:
+        type: string
+      username:
+        maxLength: 20
+        minLength: 5
+        type: string
+    required:
+    - id
+    type: object
+  model.UserIdRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
   models.AAAA:
     properties:
       id:
@@ -32,6 +160,132 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/users/user_basic/createUser:
+    post:
+      consumes:
+      - application/json
+      description: 创建用户基础信息
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建用户
+      tags:
+      - 用户基础信息
+  /api/users/user_basic/deleteUser:
+    get:
+      consumes:
+      - application/json
+      description: 删除用户接口说明
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 删除用户
+      tags:
+      - 用户基础信息
+  /api/users/user_basic/getUserInfo:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户信息详情说明
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 获取用户信息详情
+      tags:
+      - 用户基础信息
+  /api/users/user_basic/getUsersList:
+    get:
+      consumes:
+      - application/json
+      description: 用户列表说明
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetUsersListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 用户列表
+      tags:
+      - 用户基础信息
+  /api/users/user_basic/updateUser:
+    post:
+      consumes:
+      - application/json
+      description: 更新用户信息说明
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 更新用户信息
+      tags:
+      - 用户基础信息
   /api/v1/example/helloworld:
     get:
       consumes:

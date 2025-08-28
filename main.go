@@ -1,8 +1,8 @@
 package main
 
 import (
+	_ "qqchat/common"
 	"qqchat/router"
-	_ "qqchat/utils"
 )
 
 func main() {

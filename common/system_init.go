@@ -1,4 +1,4 @@
-package utils
+package common
 
 import (
 	"fmt"
@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"qqchat/common"
 	"qqchat/common/qqlog"
 	"time"
 )
@@ -17,10 +16,9 @@ import (
 var Db *gorm.DB
 
 func init() {
-	InitConfig()           // 初始化配置
-	qqlog.InitLogger()     //初始化日志Logrus日志库
-	common.InitValidator() // 初始化  自定义校验器 【暂时没用到】
-	InitGorm()             //初始化gorm
+	InitConfig()       // 初始化配置
+	qqlog.InitLogger() //初始化日志Logrus日志库
+	InitGorm()         //初始化gorm
 }
 
 // 读取配置 使用viper包

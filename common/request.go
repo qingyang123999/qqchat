@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -67,3 +68,32 @@ func GetAllRequestParams(c *gin.Context) *RequestParams {
 
 	return params
 }
+
+// 通过页码也分页大小获取mysql偏移量
+func GetPageOffset(page int, pageSize int) int {
+	if page < 1 || pageSize < 0 {
+		return 0
+	} else {
+		return (page - 1) * pageSize
+	}
+}
+
+type CustomTime struct{ time.Time }
+
+func (ct *CustomTime) UnmarshalJSON(b []byte) error {
+	value := strings.Trim(string(b), `"`)
+	if value == "" || value == "null" {
+		return nil
+	}
+	t, err := time.Parse("2006-01-02 15:04:05", value)
+	if err != nil {
+		return err
+	}
+	ct.Time = t
+	return nil
+}
+
+// 使用示例 请求验证
+//type CreateUserRequest struct {
+//	// ...     HeartbeatTime *CustomTime `json:"heartbeatTime" form:"heartbeatTime"`     // 其他时间字段同理 }
+//

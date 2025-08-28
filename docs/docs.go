@@ -15,6 +15,200 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/users/user_basic/createUser": {
+            "post": {
+                "description": "创建用户基础信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户基础信息"
+                ],
+                "summary": "创建用户",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/user_basic/deleteUser": {
+            "get": {
+                "description": "删除用户接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户基础信息"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/user_basic/getUserInfo": {
+            "get": {
+                "description": "获取用户信息详情说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户基础信息"
+                ],
+                "summary": "获取用户信息详情",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/user_basic/getUsersList": {
+            "get": {
+                "description": "用户列表说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户基础信息"
+                ],
+                "summary": "用户列表",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetUsersListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/user_basic/updateUser": {
+            "post": {
+                "description": "更新用户信息说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户基础信息"
+                ],
+                "summary": "更新用户信息",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/example/helloworld": {
             "get": {
                 "description": "接口说明",
@@ -152,6 +346,119 @@ const docTemplate = `{
                 }
             }
         },
+        "model.CreateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "phone",
+                "username"
+            ],
+            "properties": {
+                "clientIp": {
+                    "type": "string"
+                },
+                "clientPort": {
+                    "type": "string"
+                },
+                "deviceInfo": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "email": {
+                    "type": "string"
+                },
+                "heartbeatTime": {
+                    "type": "string"
+                },
+                "identity": {
+                    "type": "string"
+                },
+                "isLogout": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "loginTime": {
+                    "type": "string"
+                },
+                "logoutTime": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 8
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 5
+                }
+            }
+        },
+        "model.GetUsersListRequest": {
+            "type": "object",
+            "required": [
+                "page",
+                "pageSize"
+            ],
+            "properties": {
+                "clientIp": {
+                    "type": "string"
+                },
+                "clientPort": {
+                    "type": "string"
+                },
+                "deviceInfo": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "email": {
+                    "type": "string"
+                },
+                "heartbeatTime": {
+                    "type": "string"
+                },
+                "identity": {
+                    "type": "string"
+                },
+                "isLogout": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "loginTime": {
+                    "type": "string"
+                },
+                "logoutTime": {
+                    "type": "string"
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 5
+                }
+            }
+        },
         "model.LoginRequest": {
             "type": "object",
             "required": [
@@ -167,6 +474,75 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 5
+                }
+            }
+        },
+        "model.UpdateUserRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "clientIp": {
+                    "type": "string"
+                },
+                "clientPort": {
+                    "type": "string"
+                },
+                "deviceInfo": {
+                    "type": "string",
+                    "maxLength": 256
+                },
+                "email": {
+                    "type": "string"
+                },
+                "heartbeatTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "maximum": 20,
+                    "minimum": 5
+                },
+                "identity": {
+                    "type": "string"
+                },
+                "isLogout": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "loginTime": {
+                    "type": "string"
+                },
+                "logoutTime": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "minLength": 8
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 5
+                }
+            }
+        },
+        "model.UserIdRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },

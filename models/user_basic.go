@@ -2,8 +2,12 @@ package models
 
 import (
 	"gorm.io/gorm"
+	"qqchat/common"
+	"qqchat/model"
 	"time"
 )
+
+var UserBasicModel = UserBasic{}
 
 type UserBasic struct {
 	gorm.Model
@@ -25,8 +29,48 @@ type UserBasic struct {
 }
 
 // 设置表名称  默认的表明会带s  链接表名会变成users
-func (UserBasic) TableName() string {
+func (ub *UserBasic) TableName() string {
 	return "user_basic"
+}
+
+func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) error {
+	result := common.Db.Create(&req)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (ub *UserBasic) GetUsersList(req *model.GetUsersListRequest) (err error, users []UserBasic) {
+	result := common.Db.Where(req).Limit(req.PageSize).Offset(common.GetPageOffset(req.Page, req.PageSize)).Scan(&users)
+	if result.Error != nil {
+		return result.Error, nil
+	}
+	return nil, users
+}
+
+func (ub *UserBasic) GetUsersInfo(req *model.UserIdRequest) (err error, userInfo UserBasic) {
+	result := common.Db.Where("id=?", req.ID).First(&userInfo)
+	if result.Error != nil {
+		return result.Error, UserBasic{}
+	}
+	return nil, userInfo
+}
+
+func (ub *UserBasic) UpdateUser(req *model.UpdateUserRequest) (err error) {
+	result := common.Db.Model(&ub).Where("id=?", req.ID).Updates(req)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
+	result := common.Db.Delete(&req)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
 }
 
 type AAAA struct {
