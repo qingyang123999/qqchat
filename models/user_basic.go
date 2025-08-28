@@ -186,6 +186,13 @@ func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
 		return result.Error
 	}
 
+	//// 使用 Unscoped() 真正从数据库中删除记录，而不是软删除   方法二：保留 gorm.Model 但使用 Unscoped() 进行所有操作
+	//或者 方法一：移除 gorm.Model 并手动定义字段（推荐 把数据表中的delete_at字段去掉
+	//result := common.Db.Unscoped().Where("id = ?", req.ID).Delete(&UserBasic{})
+	//if result.Error != nil {
+	//	return result.Error
+	//}
+
 	// 检查是否有记录被删除
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("未找到ID为%d的用户记录", req.ID)
