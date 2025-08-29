@@ -6,7 +6,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -31,34 +30,10 @@ func VerifyPasswordHash(hashedPassword string, password string) bool {
 
 // ============================     AES 加密     ECB 模式加密   PKCS7 填充  =======================================
 
-// PKCS7Padding pads an input slice to be a multiple of the block size, using PKCS#7 padding.
-func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
-	padding := blockSize - len(ciphertext)%blockSize
-	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(ciphertext, padtext...)
-}
-
-// PKCS7UnPadding removes the PKCS#7 padding from an input slice.
-func PKCS7UnPadding(origData []byte) ([]byte, error) {
-	length := len(origData)
-	unpadding := int(origData[length-1])
-	if unpadding > length {
-		return nil, errors.New("unpadding size exceeded")
-	}
-	return origData[:(length - unpadding)], nil
-}
-
-// BytesToHex 将字节切片转换为十六进制字符串
-func BytesToHex(data []byte) string {
-	hexString := ""
-	for _, b := range data {
-		// 使用格式化字符串将每个字节转换为两位十六进制数
-		hexString += fmt.Sprintf("%02x", b)
-	}
-	return hexString
-}
-
-// Encrypt encrypts plaintext using AES encryption in ECB mode with PKCS7 padding.
+// AesEcbPkcs7Encrypt 使用AES-ECB模式和PKCS7填充加密明文
+// plaintext: 需要加密的明文数据
+// key: 加密密钥
+// 返回值: 加密后的数据和可能的错误
 func AesEcbPkcs7Encrypt(plaintext []byte, key []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -82,7 +57,10 @@ func AesEcbPkcs7Encrypt(plaintext []byte, key []byte) (string, error) {
 	return string(ciphertext), nil
 }
 
-// Decrypt decrypts ciphertext using AES decryption in ECB mode with PKCS7 padding.
+// AesEcbPkcs7Decrypt 使用AES-ECB模式和PKCS7填充解密密文
+// ciphertextHex: 需要解密的密文数据
+// key: 解密密钥
+// 返回值: 解密后的明文数据和可能的错误
 func AesEcbPkcs7Decrypt(ciphertextHex string, key []byte) (string, error) {
 	ciphertext := []byte(ciphertextHex)
 
@@ -109,6 +87,28 @@ func AesEcbPkcs7Decrypt(ciphertextHex string, key []byte) (string, error) {
 	}
 
 	return string(plaintext), nil
+}
+
+// PKCS7Padding 使用PKCS#7填充方式将输入数据填充到块大小的整数倍
+// ciphertext: 需要填充的原始数据
+// blockSize: 加密算法的块大小
+// 返回值: 填充后的数据
+func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+// PKCS7UnPadding 移除PKCS#7填充
+// origData: 包含PKCS#7填充的数据
+// 返回值: 移除填充后的原始数据和可能的错误
+func PKCS7UnPadding(origData []byte) ([]byte, error) {
+	length := len(origData)
+	unpadding := int(origData[length-1])
+	if unpadding > length {
+		return nil, errors.New("unpadding size exceeded")
+	}
+	return origData[:(length - unpadding)], nil
 }
 
 // ============================     md5 加密       =======================================
