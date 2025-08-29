@@ -75,3 +75,25 @@ func ParseToken(tokenString string, secretKey string) (*models.UserBasic, error)
 //	}
 //	fmt.Printf("用户信息: %+v\n", decodedUser)
 //}
+
+// 生成256 对称加密的秘钥
+//package main
+//
+//import (
+//"crypto/rand"
+//"encoding/base64"
+//"fmt"
+//)
+//
+//func generateHS256Key() string {
+//	key := make([]byte, 32) // 256-bit
+//	if _, err := rand.Read(key); err != nil {
+//		panic("密钥生成失败")
+//	}
+//	return base64.URLEncoding.EncodeToString(key)
+//}
+//
+//func main() {
+//	secret := generateHS256Key()
+//	fmt.Println("HS256 Secret Key:", secret)
+//}

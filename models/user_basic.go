@@ -1,10 +1,12 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"gorm.io/gorm"
 	"qqchat/common"
 	"qqchat/model"
+	"qqchat/utils"
 	"time"
 )
 
@@ -250,6 +252,34 @@ func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
 	}
 
 	return nil
+}
+
+// 登录 通过手机号 或者用户名
+func (ub *UserBasic) Login(req *model.LoginRequest) (err error, token string) {
+	var user UserBasic
+	var result *gorm.DB
+	result = common.Db.Where("phone = ?", req.Username).Or("username = ?", req.Username).First(&user)
+
+	// 检查用户是否存在
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("用户不存在"), ""
+		}
+		return result.Error, ""
+	}
+
+	// 验证密码是否正确
+	if !common.VerifyPasswordHash(user.Password, req.Password) {
+		return fmt.Errorf("密码错误"), ""
+	}
+
+	// 生成JWT Token
+	token, err = utils.GenerateToken(&user, "your-256-bit-secret", 24*time.Hour)
+	if err != nil {
+		return fmt.Errorf("生成token失败: %v", err), ""
+	}
+
+	return nil, token
 }
 
 type AAAA struct {
