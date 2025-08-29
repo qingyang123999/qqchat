@@ -50,7 +50,7 @@ func ParseToken(tokenString string, secretKey string) (*models.UserBasic, error)
 }
 
 //
-//// 使用示例
+//// =====================        使用示例     ===============
 //func ExampleUsage() {
 //	// 模拟数据库查询
 //	user := &models.UserBasic{
@@ -76,7 +76,7 @@ func ParseToken(tokenString string, secretKey string) (*models.UserBasic, error)
 //	fmt.Printf("用户信息: %+v\n", decodedUser)
 //}
 
-// 生成256 对称加密的秘钥
+// =========================   生成256 对称加密的秘钥    ==========================
 //package main
 //
 //import (

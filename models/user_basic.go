@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	"qqchat/common"
 	"qqchat/model"
@@ -90,11 +91,16 @@ func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) (err error) {
 		// 邮箱已存在
 		return fmt.Errorf("邮箱已存在")
 	}
+	// 生成hash密码
+	hashPassword, err := common.GeneratePasswordHash(req.Password, 0)
+	if err != nil {
+		return err
+	}
 
 	// 创建数据库模型对象
 	userModel := &UserBasic{
 		Username:      req.Username,
-		Password:      req.Password,
+		Password:      hashPassword,
 		Phone:         req.Phone,
 		Email:         req.Email,
 		Identity:      req.Identity,
@@ -274,7 +280,7 @@ func (ub *UserBasic) Login(req *model.LoginRequest) (err error, token string) {
 	}
 
 	// 生成JWT Token
-	token, err = utils.GenerateToken(&user, "your-256-bit-secret", 24*time.Hour)
+	token, err = utils.GenerateToken(&user, viper.GetString("Jwt.key"), 24*time.Hour)
 	if err != nil {
 		return fmt.Errorf("生成token失败: %v", err), ""
 	}

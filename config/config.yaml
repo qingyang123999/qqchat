@@ -13,4 +13,4 @@ Logger:
   LOG_DIR: logs/service
 
 Jwt:
-  key: logs/service
+  key: "RQmFvMjFPHZ8hnNz8bNuGU_kmGTQugQLrFHhx6zoYcA="
