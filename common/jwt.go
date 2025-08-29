@@ -1,26 +1,25 @@
-package utils
+package common
 
 import (
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
-	"qqchat/models"
 	"time"
 )
 
 // UserClaims 自定义JWT声明结构
 type UserClaims struct {
 	jwt.RegisteredClaims
-	*models.UserBasic
+	*ContextUserBasic
 }
 
-// GenerateToken 生成JWT Token
+// GenerateJwtToken 生成JWT Token
 // param  user 用户信息
 // param  secretKey 秘钥 your-256-bit-secret
 // param expiresIn  过期时间 24*time.Hour
-func GenerateToken(user *models.UserBasic, secretKey string, expiresIn time.Duration) (string, error) {
+func GenerateJwtToken(user *ContextUserBasic, secretKey string, expiresIn time.Duration) (string, error) {
 	claims := &UserClaims{
-		UserBasic: user,
+		ContextUserBasic: user,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expiresIn)),
 			Issuer:    "your-auth-service",
@@ -30,10 +29,10 @@ func GenerateToken(user *models.UserBasic, secretKey string, expiresIn time.Dura
 	return token.SignedString([]byte(secretKey))
 }
 
-// ParseToken 解析JWT Token
+// ParseJwtToken 解析JWT Token
 // param  tokenString token 字符串
 // param  secretKey 秘钥 your-256-bit-secret
-func ParseToken(tokenString string, secretKey string) (*models.UserBasic, error) {
+func ParseJwtToken(tokenString string, secretKey string) (*ContextUserBasic, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -44,7 +43,7 @@ func ParseToken(tokenString string, secretKey string) (*models.UserBasic, error)
 		return nil, err
 	}
 	if claims, ok := token.Claims.(*UserClaims); ok && token.Valid {
-		return claims.UserBasic, nil
+		return claims.ContextUserBasic, nil
 	}
 	return nil, errors.New("invalid token")
 }

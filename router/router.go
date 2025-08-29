@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"qqchat/common"
@@ -22,6 +23,9 @@ func Router() *gin.Engine {
 	router.GET("/index", service.GetIndex)
 	router.GET("/api/v1/example/helloworld", service.Helloworld)
 	router.GET("/checkTest", service.CheckTest)
+
+	// 注册中间件
+	router.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
 
 	// 用户路由组
 	userGroup := router.Group("/api/users")

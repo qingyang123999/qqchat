@@ -3,11 +3,11 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 	"qqchat/common"
 	"qqchat/model"
-	"qqchat/utils"
 	"time"
 )
 
@@ -37,7 +37,7 @@ func (ub *UserBasic) TableName() string {
 	return "user_basic"
 }
 
-func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) (err error) {
+func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (err error) {
 	// 将字符串时间转换为common.CustomTime
 	var loginTime, heartbeatTime, logoutTime common.CustomTime
 
@@ -120,7 +120,7 @@ func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) (err error) {
 	return nil
 }
 
-func (ub *UserBasic) GetUsersList(req *model.GetUsersListRequest) (err error, users []UserBasic) {
+func (ub *UserBasic) GetUsersList(c *gin.Context, req *model.GetUsersListRequest) (err error, users []UserBasic) {
 	// 构建查询条件，排除分页字段
 	query := common.Db
 
@@ -158,7 +158,12 @@ func (ub *UserBasic) GetUsersList(req *model.GetUsersListRequest) (err error, us
 	return nil, users
 }
 
-func (ub *UserBasic) GetUsersInfo(req *model.UserIdRequest) (err error, userInfo UserBasic) {
+func (ub *UserBasic) GetUsersInfo(c *gin.Context, req *model.UserIdRequest) (err error, userInfo UserBasic) {
+	//context, err := common.GetUserFromContext(c)
+	//if err != nil {
+	//	return err, UserBasic{}
+	//}
+	//id:=context.ID
 	result := common.Db.Where("id=?", req.ID).First(&userInfo)
 	if result.Error != nil {
 		return result.Error, UserBasic{}
@@ -190,7 +195,7 @@ func (ub *UserBasic) GetUsersInfoByEmail(email string) (err error, userInfo User
 	return nil, userInfo
 }
 
-func (ub *UserBasic) UpdateUser(req *model.UpdateUserRequest) (err error) {
+func (ub *UserBasic) UpdateUser(c *gin.Context, req *model.UpdateUserRequest) (err error) {
 	// 将字符串时间转换为common.CustomTime
 	updates := map[string]interface{}{
 		"Username":   req.Username,
@@ -229,7 +234,7 @@ func (ub *UserBasic) UpdateUser(req *model.UpdateUserRequest) (err error) {
 	return nil
 }
 
-func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
+func (ub *UserBasic) DeleteUser(c *gin.Context, req *model.UserIdRequest) (err error) {
 	//// 创建一个带有主键的实例，让 GORM 知道要删除哪个记录
 	//user := UserBasic{}
 	//user.ID = req.ID
@@ -261,7 +266,7 @@ func (ub *UserBasic) DeleteUser(req *model.UserIdRequest) (err error) {
 }
 
 // 登录 通过手机号 或者用户名
-func (ub *UserBasic) Login(req *model.LoginRequest) (err error, token string) {
+func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, token string) {
 	var user UserBasic
 	var result *gorm.DB
 	result = common.Db.Where("phone = ?", req.Username).Or("username = ?", req.Username).First(&user)
@@ -279,8 +284,16 @@ func (ub *UserBasic) Login(req *model.LoginRequest) (err error, token string) {
 		return fmt.Errorf("密码错误"), ""
 	}
 
-	// 生成JWT Token
-	token, err = utils.GenerateToken(&user, viper.GetString("Jwt.key"), 24*time.Hour)
+	// 生成JWT Token 过期时间24小时
+	token, err = common.GenerateJwtToken(&common.ContextUserBasic{
+		ID:         user.ID,
+		Username:   user.Username,
+		Phone:      user.Phone,
+		Email:      user.Email,
+		ClientPort: user.ClientPort,
+		ClientIP:   user.ClientIP,
+		Identity:   user.Identity,
+	}, viper.GetString("Jwt.key"), 24*time.Hour)
 	if err != nil {
 		return fmt.Errorf("生成token失败: %v", err), ""
 	}

@@ -26,7 +26,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context) {
 		return
 	}
 
-	err := models.UserBasicModel.CreateUser(&req)
+	err := models.UserBasicModel.CreateUser(c, &req)
 	if err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -55,7 +55,7 @@ func (ub *UserBasic) GetUsersList(c *gin.Context) {
 		return
 	}
 
-	err, users := models.UserBasicModel.GetUsersList(&req)
+	err, users := models.UserBasicModel.GetUsersList(c, &req)
 	if err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -81,8 +81,9 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context) {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	err, userInfo := models.UserBasicModel.GetUsersInfo(&req)
+	//u, _ :=common.GetUserFromContext(c)
+	//id:=u.ID
+	err, userInfo := models.UserBasicModel.GetUsersInfo(c, &req)
 	if err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -109,7 +110,7 @@ func (ub *UserBasic) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	err := models.UserBasicModel.UpdateUser(&req)
+	err := models.UserBasicModel.UpdateUser(c, &req)
 	if err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -138,7 +139,7 @@ func (ub *UserBasic) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	err := models.UserBasicModel.DeleteUser(&req)
+	err := models.UserBasicModel.DeleteUser(c, &req)
 	if err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -167,7 +168,7 @@ func (ub *UserBasic) Login(c *gin.Context) {
 		return
 	}
 
-	err, token := models.UserBasicModel.Login(&req)
+	err, token := models.UserBasicModel.Login(c, &req)
 	if err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
