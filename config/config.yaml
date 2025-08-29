@@ -14,3 +14,4 @@ Logger:
 
 Jwt:
   key: "RQmFvMjFPHZ8hnNz8bNuGU_kmGTQugQLrFHhx6zoYcA="
+  expiresIn: 86400             # 秒

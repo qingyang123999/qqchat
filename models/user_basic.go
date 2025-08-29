@@ -284,7 +284,7 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 		return fmt.Errorf("密码错误"), ""
 	}
 
-	// 生成JWT Token 过期时间24小时
+	// 生成JWT Token 过期时间24小时 将用户信息写入token中
 	token, err = common.GenerateJwtToken(&common.ContextUserBasic{
 		ID:         user.ID,
 		Username:   user.Username,
@@ -293,7 +293,7 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 		ClientPort: user.ClientPort,
 		ClientIP:   user.ClientIP,
 		Identity:   user.Identity,
-	}, viper.GetString("Jwt.key"), 24*time.Hour)
+	}, viper.GetString("Jwt.key"), time.Duration(viper.GetInt("Jwt.expiresIn"))*time.Second)
 	if err != nil {
 		return fmt.Errorf("生成token失败: %v", err), ""
 	}

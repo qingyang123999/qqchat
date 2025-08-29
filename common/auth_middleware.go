@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 中间件 鉴权token 并且把token的信息写入gin.context
+// 中间件 鉴权token 并且把token的用户信息写入gin.context
 func AuthMiddleware(secretKey string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 1. 从Header获取Token
