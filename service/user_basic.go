@@ -149,3 +149,32 @@ func (ub *UserBasic) DeleteUser(c *gin.Context) {
 		"message": "删除用户成功",
 	})
 }
+
+// @Tags 用户基础信息
+// @Summary 用户登录
+// @Schemes
+// @Description 用户登录接口说明
+// @Accept json
+// @Produce json
+// @Router /api/users/user_basic/login [post]
+// @Param data body model.LoginRequest true "请求参数"
+// @Success 200 {object} common.Response
+// @Failure 400  {string} common.Response
+func (ub *UserBasic) Login(c *gin.Context) {
+	var req model.LoginRequest
+	if err := common.ValidateRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err, token := models.UserBasicModel.Login(&req)
+	if err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// 业务逻辑处理...
+	common.SuccessResponse(c, gin.H{
+		"token": token,
+	})
+}
