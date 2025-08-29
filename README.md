@@ -1,5 +1,4 @@
 # qqchat
-
 gin框架+websocket聊天
 
 ## gin框架文档
@@ -11,7 +10,6 @@ https://gorm.io/
 https://www.kancloud.cn/sliver_horn/gorm/1861153
 
 ## gin-swagger
-
 链接里面有使用操作手册： https://github.com/swaggo/gin-swagger  
 注释的规范格式： https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format    
 go get -u github.com/swaggo/swag/cmd/swag    
