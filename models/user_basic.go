@@ -159,7 +159,7 @@ func (ub *UserBasic) GetUsersInfo(req *model.UserIdRequest) (err error, userInfo
 }
 
 func (ub *UserBasic) GetUsersInfoByUserName(userName string) (err error, userInfo UserBasic) {
-	result := common.Db.Where("id=?", userName).First(&userInfo)
+	result := common.Db.Where("username=?", userName).First(&userInfo)
 	if result.Error != nil {
 		return result.Error, UserBasic{}
 	}
@@ -167,7 +167,7 @@ func (ub *UserBasic) GetUsersInfoByUserName(userName string) (err error, userInf
 }
 
 func (ub *UserBasic) GetUsersInfoByPhone(phone string) (err error, userInfo UserBasic) {
-	result := common.Db.Where("id=?", phone).First(&userInfo)
+	result := common.Db.Where("phone=?", phone).First(&userInfo)
 	if result.Error != nil {
 		return result.Error, UserBasic{}
 	}
@@ -175,7 +175,7 @@ func (ub *UserBasic) GetUsersInfoByPhone(phone string) (err error, userInfo User
 }
 
 func (ub *UserBasic) GetUsersInfoByEmail(email string) (err error, userInfo UserBasic) {
-	result := common.Db.Where("id=?", email).First(&userInfo)
+	result := common.Db.Where("email=?", email).First(&userInfo)
 	if result.Error != nil {
 		return result.Error, UserBasic{}
 	}
