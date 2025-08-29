@@ -3,11 +3,11 @@
 gin框架+websocket聊天
 
 ## gin框架文档
-
+https://github.com/gin-gonic/gin  
 https://gin-gonic.com/zh-cn/docs/introduction/
 
 ## gorm 文档
-
+https://gorm.io/
 https://www.kancloud.cn/sliver_horn/gorm/1861153
 
 ## gin-swagger
