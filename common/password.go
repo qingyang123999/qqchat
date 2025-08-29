@@ -28,7 +28,7 @@ func VerifyPasswordHash(hashedPassword string, password string) bool {
 	return err == nil
 }
 
-// ============================     AES 加密     ECB 模式加密   PKCS7 填充  =======================================
+// ====================     AES 加密     使用AES-ECB模式 和 PKCS7填充加密明文   =================
 
 // AesEcbPkcs7Encrypt 使用AES-ECB模式和PKCS7填充加密明文
 // plaintext: 需要加密的明文数据
