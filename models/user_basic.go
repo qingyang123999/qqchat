@@ -62,6 +62,33 @@ func (ub *UserBasic) CreateUser(req *model.CreateUserRequest) (err error) {
 		logoutTime = common.CustomTime{Time: parsedTime}
 	}
 
+	err, u := ub.GetUsersInfoByUserName(req.Username)
+	if err != nil {
+		return err
+	}
+	if u.ID != 0 {
+		// 用户名已存在
+		return fmt.Errorf("用户名已存在")
+	}
+
+	err, u2 := ub.GetUsersInfoByPhone(req.Phone)
+	if err != nil {
+		return err
+	}
+	if u2.ID != 0 {
+		// 手机号已存在
+		return fmt.Errorf("手机号已存在")
+	}
+
+	err, u3 := ub.GetUsersInfoByEmail(req.Email)
+	if err != nil {
+		return err
+	}
+	if u3.ID != 0 {
+		// 邮箱已存在
+		return fmt.Errorf("邮箱已存在")
+	}
+
 	// 创建数据库模型对象
 	userModel := &UserBasic{
 		Username:      req.Username,
@@ -125,6 +152,30 @@ func (ub *UserBasic) GetUsersList(req *model.GetUsersListRequest) (err error, us
 
 func (ub *UserBasic) GetUsersInfo(req *model.UserIdRequest) (err error, userInfo UserBasic) {
 	result := common.Db.Where("id=?", req.ID).First(&userInfo)
+	if result.Error != nil {
+		return result.Error, UserBasic{}
+	}
+	return nil, userInfo
+}
+
+func (ub *UserBasic) GetUsersInfoByUserName(userName string) (err error, userInfo UserBasic) {
+	result := common.Db.Where("id=?", userName).First(&userInfo)
+	if result.Error != nil {
+		return result.Error, UserBasic{}
+	}
+	return nil, userInfo
+}
+
+func (ub *UserBasic) GetUsersInfoByPhone(phone string) (err error, userInfo UserBasic) {
+	result := common.Db.Where("id=?", phone).First(&userInfo)
+	if result.Error != nil {
+		return result.Error, UserBasic{}
+	}
+	return nil, userInfo
+}
+
+func (ub *UserBasic) GetUsersInfoByEmail(email string) (err error, userInfo UserBasic) {
+	result := common.Db.Where("id=?", email).First(&userInfo)
 	if result.Error != nil {
 		return result.Error, UserBasic{}
 	}
