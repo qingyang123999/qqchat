@@ -11,6 +11,10 @@ gin框架+websocket聊天
 ## 具体的系统路径访问处理  
 第一步： 处理请求校验-验证器 和 返回  
     请求校验：有俩部分，一手动校验，二自定义校验规则  
+        ValidateRequest 校验表单请求参数  ShouldBind 方式
+        ValidateJSONRequest  校验JSON请求参数  ShouldBindJSON方式
+        ValidateQueryRequest  校验请求路径上的参数  ShouldBindQuery方式  http://localhost:8080/search?name=John&age=30这种参数
+        ValidateHeaderRequest  校验Header头请求参数  ShouldBindHeader 方式
     返回： 需要定义正确返回和错误返回  
 
 第二步：编写系统异常捕获处理 ErrorHandlerMiddleware  

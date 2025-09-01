@@ -29,9 +29,33 @@ func NewValidationError(message string) *ValidationError {
 	return &ValidationError{Message: message}
 }
 
-// ValidateRequest 校验请求参数  ShouldBindJSON方式
+// ValidateRequest 校验表单请求参数  ShouldBind 方式
 func ValidateRequest(c *gin.Context, req interface{}) error {
+	if err := c.ShouldBind(req); err != nil {
+		return translateValidationErrors(err)
+	}
+	return nil
+}
+
+// ValidateJSONRequest  校验JSON请求参数  ShouldBindJSON方式
+func ValidateJSONRequest(c *gin.Context, req interface{}) error {
 	if err := c.ShouldBindJSON(req); err != nil {
+		return translateValidationErrors(err)
+	}
+	return nil
+}
+
+// ValidateQueryRequest  校验请求路径上的参数  ShouldBindQuery方式  http://localhost:8080/search?name=John&age=30这种参数
+func ValidateQueryRequest(c *gin.Context, req interface{}) error {
+	if err := c.ShouldBindQuery(req); err != nil {
+		return translateValidationErrors(err)
+	}
+	return nil
+}
+
+// ValidateHeaderRequest  校验Header头请求参数  ShouldBindHeader 方式
+func ValidateHeaderRequest(c *gin.Context, req interface{}) error {
+	if err := c.ShouldBindHeader(req); err != nil {
 		return translateValidationErrors(err)
 	}
 	return nil
