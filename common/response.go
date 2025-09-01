@@ -5,6 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"qqchat/common/qqlog"
+	"qqchat/utils"
 )
 
 type Response struct {
@@ -27,7 +28,7 @@ func SuccessResponse(c *gin.Context, data interface{}) {
 func ErrorResponse(c *gin.Context, code int, message string) {
 	// 当错误返回是记录所有信息
 	qqlog.Log.WithFields(logrus.Fields{
-		"RequestParams": GetAllRequestParams(c),
+		"RequestParams": utils.GetAllRequestParams(c),
 	}).Error(message)
 
 	c.JSON(code, Response{
@@ -36,17 +37,4 @@ func ErrorResponse(c *gin.Context, code int, message string) {
 		Message: message,
 	})
 	c.Abort()
-}
-
-// ValidationError 校验错误
-type ValidationError struct {
-	Message string
-}
-
-func (e *ValidationError) Error() string {
-	return e.Message
-}
-
-func NewValidationError(message string) *ValidationError {
-	return &ValidationError{Message: message}
 }

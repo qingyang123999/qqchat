@@ -6,6 +6,7 @@ import (
 	"qqchat/common"
 	"qqchat/model"
 	"qqchat/models"
+	"qqchat/utils"
 )
 
 // @Tags 目录名称
@@ -42,9 +43,9 @@ func GetIndex(ctx *gin.Context) {
 		Identity:      "dfdgdfgsd",
 		ClientIP:      "125.22.00.123",
 		ClientPort:    "80",
-		LoginTime:     common.NewCustomTimeFromNow(),
-		HeartbeatTime: common.NewCustomTimeFromNow(),
-		LogoutTime:    common.NewCustomTimeFromNow(),
+		LoginTime:     utils.NewCustomTimeFromNow(),
+		HeartbeatTime: utils.NewCustomTimeFromNow(),
+		LogoutTime:    utils.NewCustomTimeFromNow(),
 		IsLogout:      1,
 		DeviceInfo:    "设备信息1",
 	}

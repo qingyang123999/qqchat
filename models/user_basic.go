@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"qqchat/common"
 	"qqchat/model"
+	"qqchat/utils"
 	"time"
 )
 
@@ -15,21 +16,21 @@ var UserBasicModel = UserBasic{}
 
 type UserBasic struct {
 	gorm.Model
-	ID            uint64            `gorm:"primaryKey;column:id;size:64"  json:"id"`
-	Username      string            `gorm:"column:username;size:32"       json:"username"`
-	Password      string            `gorm:"column:password;size:64"       json:"password"`
-	Phone         string            `gorm:"column:phone;size:64"          json:"phone"`
-	Email         string            `gorm:"column:email;size:64"          json:"email"`
-	Identity      string            `gorm:"column:identity;size:64"       json:"identity"`
-	ClientIP      string            `gorm:"column:client_ip;size:64"      json:"clientIp"`
-	ClientPort    string            `gorm:"column:client_port;size:64"    json:"clientPort"`
-	LoginTime     common.CustomTime `gorm:"column:login_time"             json:"loginTime"`
-	HeartbeatTime common.CustomTime `gorm:"column:heartbeat_time"         json:"heartbeatTime"`
-	LogoutTime    common.CustomTime `gorm:"column:logout_time"            json:"logoutTime"`
-	IsLogout      int               `gorm:"column:is_logout;size:64"      json:"isLogout"`
-	DeviceInfo    string            `gorm:"column:device_info;size:64"    json:"deviceInfo"`
-	CreatedAt     common.CustomTime `gorm:"column:created_at"             json:"createdAtt"`
-	UpdatedAt     common.CustomTime `gorm:"column:updated_at"             json:"updatedAt"`
+	ID            uint64           `gorm:"primaryKey;column:id;size:64"  json:"id"`
+	Username      string           `gorm:"column:username;size:32"       json:"username"`
+	Password      string           `gorm:"column:password;size:64"       json:"password"`
+	Phone         string           `gorm:"column:phone;size:64"          json:"phone"`
+	Email         string           `gorm:"column:email;size:64"          json:"email"`
+	Identity      string           `gorm:"column:identity;size:64"       json:"identity"`
+	ClientIP      string           `gorm:"column:client_ip;size:64"      json:"clientIp"`
+	ClientPort    string           `gorm:"column:client_port;size:64"    json:"clientPort"`
+	LoginTime     utils.CustomTime `gorm:"column:login_time"             json:"loginTime"`
+	HeartbeatTime utils.CustomTime `gorm:"column:heartbeat_time"         json:"heartbeatTime"`
+	LogoutTime    utils.CustomTime `gorm:"column:logout_time"            json:"logoutTime"`
+	IsLogout      int              `gorm:"column:is_logout;size:64"      json:"isLogout"`
+	DeviceInfo    string           `gorm:"column:device_info;size:64"    json:"deviceInfo"`
+	CreatedAt     utils.CustomTime `gorm:"column:created_at"             json:"createdAtt"`
+	UpdatedAt     utils.CustomTime `gorm:"column:updated_at"             json:"updatedAt"`
 }
 
 // 设置表名称  默认的表明会带s  链接表名会变成users
@@ -39,14 +40,14 @@ func (ub *UserBasic) TableName() string {
 
 func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (err error) {
 	// 将字符串时间转换为common.CustomTime
-	var loginTime, heartbeatTime, logoutTime common.CustomTime
+	var loginTime, heartbeatTime, logoutTime utils.CustomTime
 
 	if req.LoginTime != "" {
 		parsedTime, err := time.Parse("2006-01-02 15:04:05", req.LoginTime)
 		if err != nil {
 			return err
 		}
-		loginTime = common.CustomTime{Time: parsedTime}
+		loginTime = utils.CustomTime{Time: parsedTime}
 	}
 
 	if req.HeartbeatTime != "" {
@@ -54,7 +55,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 		if err != nil {
 			return err
 		}
-		heartbeatTime = common.CustomTime{Time: parsedTime}
+		heartbeatTime = utils.CustomTime{Time: parsedTime}
 	}
 
 	if req.LogoutTime != "" {
@@ -62,7 +63,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 		if err != nil {
 			return err
 		}
-		logoutTime = common.CustomTime{Time: parsedTime}
+		logoutTime = utils.CustomTime{Time: parsedTime}
 	}
 
 	err, u := ub.GetUsersInfoByUserName(req.Username)
@@ -92,7 +93,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 		return fmt.Errorf("邮箱已存在")
 	}
 	// 生成hash密码
-	hashPassword, err := common.GeneratePasswordHash(req.Password, 0)
+	hashPassword, err := utils.GeneratePasswordHash(req.Password, 0)
 	if err != nil {
 		return err
 	}
@@ -151,7 +152,7 @@ func (ub *UserBasic) GetUsersList(c *gin.Context, req *model.GetUsersListRequest
 	}
 
 	// 执行查询
-	result := query.Limit(req.PageSize).Offset(common.GetPageOffset(req.Page, req.PageSize)).Find(&users)
+	result := query.Limit(req.PageSize).Offset(utils.GetPageOffset(req.Page, req.PageSize)).Find(&users)
 	if result.Error != nil {
 		return result.Error, nil
 	}
@@ -211,19 +212,19 @@ func (ub *UserBasic) UpdateUser(c *gin.Context, req *model.UpdateUserRequest) (e
 
 	if req.LoginTime != "" {
 		if loginTime, err := time.Parse("2006-01-02 15:04:05", req.LoginTime); err == nil {
-			updates["LoginTime"] = common.CustomTime{Time: loginTime}
+			updates["LoginTime"] = utils.CustomTime{Time: loginTime}
 		}
 	}
 
 	if req.HeartbeatTime != "" {
 		if heartbeatTime, err := time.Parse("2006-01-02 15:04:05", req.HeartbeatTime); err == nil {
-			updates["HeartbeatTime"] = common.CustomTime{Time: heartbeatTime}
+			updates["HeartbeatTime"] = utils.CustomTime{Time: heartbeatTime}
 		}
 	}
 
 	if req.LogoutTime != "" {
 		if logoutTime, err := time.Parse("2006-01-02 15:04:05", req.LogoutTime); err == nil {
-			updates["LogoutTime"] = common.CustomTime{Time: logoutTime}
+			updates["LogoutTime"] = utils.CustomTime{Time: logoutTime}
 		}
 	}
 
@@ -280,7 +281,7 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 	}
 
 	// 验证密码是否正确
-	if !common.VerifyPasswordHash(user.Password, req.Password) {
+	if !utils.VerifyPasswordHash(user.Password, req.Password) {
 		return fmt.Errorf("密码错误"), ""
 	}
 

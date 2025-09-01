@@ -13,7 +13,21 @@ import (
 	"time"
 )
 
+// 验证器
 var trans ut.Translator
+
+// ValidationError 校验错误
+type ValidationError struct {
+	Message string
+}
+
+func (e *ValidationError) Error() string {
+	return e.Message
+}
+
+func NewValidationError(message string) *ValidationError {
+	return &ValidationError{Message: message}
+}
 
 // ValidateRequest 校验请求参数  ShouldBindJSON方式
 func ValidateRequest(c *gin.Context, req interface{}) error {

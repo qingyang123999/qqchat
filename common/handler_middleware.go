@@ -28,7 +28,7 @@ func (e *DatabaseError) Error() string {
 	return e.Message
 }
 
-// ErrorHandlerMiddleware 全局错误处理中间件
+// ErrorHandlerMiddleware 全局异常捕获处理中间件
 func ErrorHandlerMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
