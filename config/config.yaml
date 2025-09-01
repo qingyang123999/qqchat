@@ -4,14 +4,22 @@
 
 APP_ENV: dev
 
-
 Mysql:
   dns: root:DHHdfghdfg@578571.@tcp(124.220.164.90:3306)/qqchat?charset=utf8mb4&parseTime=True&loc=Local
-  LOG_DIR: logs/sql
+  LOG_DIR: logs/sql                  #mysql 日志目录
 
-Logger:
+Logger: # 日志
   LOG_DIR: logs/service
 
 Jwt:
   key: "RQmFvMjFPHZ8hnNz8bNuGU_kmGTQugQLrFHhx6zoYcA="
   expiresIn: 86400             # 秒
+
+Redis:
+  Addr: ""                                #Redis服务器地址6379
+  Password: ""    #认证密码（若无则留空）
+  DB: 3                                                 #数据库索引（0-15）
+  PoolSize: 50                                          #最大连接数
+  MaxIdleConns: 8                                       #最大空闲连接数
+  MinIdleConns: 2                                      #最小空闲连接数
+  DialTimeout: 5                                       #连接超时时间   秒
