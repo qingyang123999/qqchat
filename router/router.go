@@ -24,9 +24,10 @@ func Router() *gin.Engine {
 	router.GET("/api/v1/example/helloworld", service.Helloworld)
 	router.GET("/checkTest", service.CheckTest)
 
+	router.POST("/api/users/user_basic/login", service.ApiService.UserBasic.Login) // 登录
+
 	// 注册中间件
 	router.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
-
 	// 用户路由组
 	userGroup := router.Group("/api/users")
 	{

@@ -21,7 +21,7 @@ import (
 // @Param data  models.AAAA true "请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]"
 // @Success 200 {string} helloworld
 // @Failure 500  {string} helloworld
-func Helloworld1(g *gin.Context) {
+func Helloworld(g *gin.Context) {
 	g.JSON(http.StatusOK, "helloworld")
 }
 
