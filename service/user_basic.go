@@ -17,6 +17,8 @@ type UserBasic struct{}
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/createUser [post]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
 // @Param data body model.CreateUserRequest true "请求参数"
 // @Success 200 {object} common.Response
 func (ub *UserBasic) CreateUser(c *gin.Context) {
@@ -45,6 +47,8 @@ func (ub *UserBasic) CreateUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/getUsersList [get]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
 // @Param data body model.GetUsersListRequest true "请求参数"
 // @Success 200 {object} common.Response
 // @Failure 400  {string} common.Response
@@ -72,6 +76,8 @@ func (ub *UserBasic) GetUsersList(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/getUserInfo [get]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
 // @Param data body model.UserIdRequest true "请求参数"
 // @Success 200 {object} common.Response
 // @Failure 400  {string} common.Response
@@ -100,6 +106,8 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/updateUser [post]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
 // @Param data body model.UpdateUserRequest true "请求参数"
 // @Success 200 {object} common.Response
 // @Failure 400  {string} common.Response
@@ -129,6 +137,8 @@ func (ub *UserBasic) UpdateUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/deleteUser [get]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
 // @Param data body model.UserIdRequest true "请求参数"
 // @Success 200 {object} common.Response
 // @Failure 400  {string} common.Response
@@ -158,6 +168,8 @@ func (ub *UserBasic) DeleteUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/login [post]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
 // @Param data body model.LoginRequest true "请求参数"
 // @Success 200 {object} common.Response
 // @Failure 400  {string} common.Response
