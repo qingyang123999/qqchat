@@ -36,7 +36,7 @@ func Router() *gin.Engine {
 	userGroup := router.Group("/api/users")
 	{
 		// 注册中间件
-		router.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
+		userGroup.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
 
 		userGroup.POST("/user_basic/createUser", service.ApiService.UserBasic.CreateUser)
 		userGroup.GET("/user_basic/getUsersList", service.ApiService.UserBasic.GetUsersList)
