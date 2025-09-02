@@ -24,13 +24,20 @@ func Router() *gin.Engine {
 	router.GET("/api/v1/example/helloworld", service.Helloworld)
 	router.GET("/checkTest", service.CheckTest)
 
+	// websocketGroup
+	websocketGroup := router.Group("/api/websocket")
+	{
+		websocketGroup.POST("/sendmsg", service.ApiService.SysWebSocket.SendMsg)
+	}
+
 	router.POST("/api/users/user_basic/login", service.ApiService.UserBasic.Login) // 登录
 
-	// 注册中间件
-	router.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
 	// 用户路由组
 	userGroup := router.Group("/api/users")
 	{
+		// 注册中间件
+		router.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
+
 		userGroup.POST("/user_basic/createUser", service.ApiService.UserBasic.CreateUser)
 		userGroup.GET("/user_basic/getUsersList", service.ApiService.UserBasic.GetUsersList)
 		userGroup.GET("/user_basic/getUserInfo", service.ApiService.UserBasic.GetUsersInfo)

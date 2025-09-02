@@ -29,7 +29,7 @@ func InitRedis(ctx context.Context) {
 	RedisDb = redis.NewClient(options)
 
 	// 测试连接有效性
-	if err := pingRedis(ctx); err != nil {
+	if err := pingRedisDb(ctx); err != nil {
 		qqlog.Log.Errorf("Redis连接初始化失败: %v", err)
 		panic(fmt.Errorf("Redis连接初始化失败: %v", err))
 	}
@@ -47,11 +47,34 @@ func InitRedis(ctx context.Context) {
 }
 
 // pingRedis 发送PING命令测试连接
-func pingRedis(ctx context.Context) error {
+func pingRedisDb(ctx context.Context) error {
 	// 设置5秒超时上下文
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	_, err := RedisDb.Ping(ctx).Result()
 	return err
+}
+
+const RedisDbPublishKey = "websocket"
+
+// RedisDbPublish  发布消息到channel  Redis的发布/订阅（Pub/Sub）模式
+// param  channel 消息的目标频道名称
+// content  待发送的消息内容
+func RedisDbPublish(ctx context.Context, channel string, content interface{}) error {
+	var err error
+	err = RedisDb.Publish(ctx, channel, content).Err()
+	return err
+}
+
+// RedisDbSubscribe  发布消息到channel  Redis的发布/订阅（Pub/Sub）模式
+// param  channel 消息的目标频道名称
+func RedisDbSubscribe(ctx context.Context, channel string) (message string, err error) {
+	pubSub := RedisDb.Subscribe(ctx, channel)
+	receiveMessage, err := pubSub.ReceiveMessage(ctx)
+	if err != nil {
+		return "", err
+	}
+	fmt.Println(receiveMessage.String())
+	return receiveMessage.Payload, nil
 }
