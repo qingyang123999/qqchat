@@ -20,7 +20,17 @@ var webUpgrader = &websocket.Upgrader{
 	},
 }
 
-func (web *SysWebSocket) SendMsg(c *gin.Context) {
+// websocket测试示例1
+func (web *SysWebSocket) SendMsgTest1(c *gin.Context) {
+	//虽然全局中间件可以捕获异常，但建议保留方法内的 recover，因为：
+	//WebSocket 是长连接，异常处理需要更精细的控制
+	//可以在方法内进行特定的清理工作
+	//有助于调试和问题定位
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("recover:", err)
+		}
+	}()
 	// 将HTTP连接升级为WebSocket连接
 	conn, err := webUpgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
@@ -28,13 +38,6 @@ func (web *SysWebSocket) SendMsg(c *gin.Context) {
 		return
 	}
 	fmt.Println("成功连接 地址：", conn.RemoteAddr().String())
-	defer conn.Close()
-
-	// 设置心跳处理
-	conn.SetPongHandler(func(string) error {
-		conn.SetReadDeadline(time.Now().Add(60 * time.Second))
-		return nil
-	})
 
 	// 用于发送心跳的ticker
 	ticker := time.NewTicker(3 * time.Second)
@@ -44,8 +47,12 @@ func (web *SysWebSocket) SendMsg(c *gin.Context) {
 	go func() {
 
 		for {
-			// 设置读取超时
-			conn.SetReadDeadline(time.Now().Add(60 * time.Second))
+
+			// 设置读取超时 设置连接超时时间 超时断开
+			err := conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+			if err != nil {
+				return
+			}
 
 			// 读取websocket消息
 			msgType, msg, err := conn.ReadMessage()
@@ -56,6 +63,7 @@ func (web *SysWebSocket) SendMsg(c *gin.Context) {
 				} else {
 					fmt.Printf("WebSocket连接关闭: %v\n", err)
 				}
+				return
 			}
 
 			fmt.Printf("msgType:%v,msg:%v\n", msgType, string(msg))
@@ -67,25 +75,22 @@ func (web *SysWebSocket) SendMsg(c *gin.Context) {
 	err = conn.WriteMessage(websocket.TextMessage, []byte(welcomeMsg))
 	if err != nil {
 		fmt.Printf("发送欢迎消息失败: %v\n", err)
-		conn.Close()
 		return
 	}
 
 	// 主循环处理消息发送和心跳
 	for {
+
 		select {
 		case <-ticker.C:
 			// 发送心跳
 			if err := conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				fmt.Printf("发送心跳失败: %v\n", err)
-				conn.Close()
 				return
 			}
 		default:
-			err = conn.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf("[ws][%s]:%s", utils.GetNowTime(), "1111")))
-			if err != nil {
-				return
-			}
+			// 添加短暂的延迟以避免忙等待
+			time.Sleep(100 * time.Millisecond)
 		}
 	}
 }
