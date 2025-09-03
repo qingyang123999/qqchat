@@ -11,11 +11,74 @@
  Target Server Version : 80405
  File Encoding         : 65001
 
- Date: 28/08/2025 19:47:30
+ Date: 03/09/2025 15:38:17
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for contact
+-- ----------------------------
+DROP TABLE IF EXISTS `contact`;
+CREATE TABLE `contact`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ower_id` int UNSIGNED NOT NULL COMMENT '谁的信息',
+  `target_id` int UNSIGNED NOT NULL COMMENT '关联谁',
+  `type` int UNSIGNED NOT NULL COMMENT '对应的类型 ',
+  `desc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人员关系' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of contact
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for group_basic
+-- ----------------------------
+DROP TABLE IF EXISTS `group_basic`;
+CREATE TABLE `group_basic`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '群名称',
+  `ower_id` int UNSIGNED NULL DEFAULT NULL COMMENT '群主id',
+  `icon` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片',
+  `type` int UNSIGNED NULL DEFAULT NULL COMMENT '类型',
+  `desc` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `created_at` datetime NULL DEFAULT NULL,
+  `updated_at` datetime NULL DEFAULT NULL,
+  `deleted_at` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '群' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of group_basic
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for messages
+-- ----------------------------
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `form_id` int UNSIGNED NULL DEFAULT NULL COMMENT '发送者',
+  `target_id` int UNSIGNED NULL DEFAULT NULL COMMENT '接收者',
+  `type` int UNSIGNED NULL DEFAULT NULL COMMENT '消息类型  群聊  私聊  广播',
+  `media` int NULL DEFAULT NULL COMMENT '消息类型 文字  图片  音频',
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
+  `pic` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片',
+  `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `desc` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `amount` bigint UNSIGNED NULL DEFAULT NULL COMMENT '其它数字相关的',
+  `created_at` datetime NULL DEFAULT NULL,
+  `updated_at` datetime NULL DEFAULT NULL,
+  `deleted_at` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of messages
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user_basic
@@ -39,7 +102,7 @@ CREATE TABLE `user_basic`  (
   `updated_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_basic
