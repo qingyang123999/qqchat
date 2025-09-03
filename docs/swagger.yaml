@@ -9,6 +9,76 @@ definitions:
       success:
         type: boolean
     type: object
+  model.ContactIdRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  model.CreateContactRequest:
+    properties:
+      desc:
+        type: string
+      owerId:
+        type: integer
+      targetId:
+        type: integer
+      type:
+        type: integer
+    required:
+    - owerId
+    - targetId
+    - type
+    type: object
+  model.CreateGroupBasicRequest:
+    properties:
+      desc:
+        type: string
+      icon:
+        type: string
+      name:
+        type: string
+      owerId:
+        type: integer
+      type:
+        type: integer
+    required:
+    - icon
+    - name
+    - owerId
+    - type
+    type: object
+  model.CreateMessagesRequest:
+    properties:
+      amount:
+        type: integer
+      content:
+        type: string
+      desc:
+        type: string
+      formId:
+        type: integer
+      id:
+        type: integer
+      media:
+        type: string
+      pic:
+        type: string
+      targetId:
+        type: integer
+      type:
+        type: integer
+      url:
+        type: string
+    required:
+    - content
+    - formId
+    - id
+    - media
+    - targetId
+    - type
+    type: object
   model.CreateUserRequest:
     properties:
       clientIp:
@@ -48,6 +118,88 @@ definitions:
     - password
     - phone
     - username
+    type: object
+  model.GetContactListRequest:
+    properties:
+      owerId:
+        type: integer
+      page:
+        minimum: 1
+        type: integer
+      pageSize:
+        minimum: 1
+        type: integer
+      targetId:
+        type: integer
+      type:
+        type: integer
+    required:
+    - page
+    - pageSize
+    type: object
+  model.GetGroupBasicListRequest:
+    properties:
+      createdAtt:
+        $ref: '#/definitions/utils.CustomTime'
+      desc:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      owerId:
+        type: integer
+      page:
+        minimum: 1
+        type: integer
+      pageSize:
+        minimum: 1
+        type: integer
+      type:
+        type: integer
+      updatedAt:
+        $ref: '#/definitions/utils.CustomTime'
+    required:
+    - page
+    - pageSize
+    type: object
+  model.GetMessagesListRequest:
+    properties:
+      amount:
+        type: integer
+      content:
+        type: string
+      createdAtt:
+        $ref: '#/definitions/utils.CustomTime'
+      desc:
+        type: string
+      formId:
+        type: integer
+      id:
+        type: integer
+      media:
+        type: string
+      page:
+        minimum: 1
+        type: integer
+      pageSize:
+        minimum: 1
+        type: integer
+      pic:
+        type: string
+      targetId:
+        type: integer
+      type:
+        type: integer
+      updatedAt:
+        $ref: '#/definitions/utils.CustomTime'
+      url:
+        type: string
+    required:
+    - page
+    - pageSize
     type: object
   model.GetUsersListRequest:
     properties:
@@ -89,6 +241,13 @@ definitions:
     - page
     - pageSize
     type: object
+  model.GroupBasicIdRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
   model.LoginRequest:
     properties:
       password:
@@ -96,11 +255,57 @@ definitions:
         type: string
       username:
         maxLength: 20
-        minLength: 5
+        minLength: 2
         type: string
     required:
     - password
     - username
+    type: object
+  model.MessagesIdRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  model.UpdateContactRequest:
+    properties:
+      desc:
+        type: string
+      id:
+        type: integer
+      owerId:
+        type: integer
+      targetId:
+        type: integer
+      type:
+        type: integer
+    required:
+    - id
+    - owerId
+    - targetId
+    - type
+    type: object
+  model.UpdateGroupBasicRequest:
+    properties:
+      createdAtt:
+        $ref: '#/definitions/utils.CustomTime'
+      desc:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      owerId:
+        type: integer
+      type:
+        type: integer
+      updatedAt:
+        $ref: '#/definitions/utils.CustomTime'
+    required:
+    - id
     type: object
   model.UpdateUserRequest:
     properties:
@@ -116,8 +321,6 @@ definitions:
       heartbeatTime:
         type: string
       id:
-        maximum: 20
-        minimum: 5
         type: integer
       identity:
         type: string
@@ -157,15 +360,522 @@ definitions:
       username:
         type: string
     type: object
+  utils.CustomTime:
+    properties:
+      time.Time:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
+  /api/users/contact/createContact:
+    post:
+      consumes:
+      - application/json
+      description: 创建用户关系描述
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateContactRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建用户关系
+      tags:
+      - 用户关系
+  /api/users/contact/deleteContact:
+    get:
+      consumes:
+      - application/json
+      description: 删除用户关系接口说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.ContactIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 删除用户关系
+      tags:
+      - 用户关系
+  /api/users/contact/getContactInfo:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户关系详情详情说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.ContactIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 获取用户关系详情
+      tags:
+      - 用户关系
+  /api/users/contact/getContactList:
+    get:
+      consumes:
+      - application/json
+      description: 用户关系列表说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetContactListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 用户关系列表
+      tags:
+      - 用户关系
+  /api/users/contact/updateContact:
+    post:
+      consumes:
+      - application/json
+      description: 更新用户关系信息说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateContactRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 更新用户关系
+      tags:
+      - 用户关系
+  /api/users/group_basic/createGroupBasic:
+    post:
+      consumes:
+      - application/json
+      description: 创建群基础信息接口说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateGroupBasicRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建群基础信息
+      tags:
+      - 群基础信息
+  /api/users/group_basic/deleteGroupBasic:
+    get:
+      consumes:
+      - application/json
+      description: 删除群基础信息接口说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.GroupBasicIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 删除群基础信息
+      tags:
+      - 群基础信息
+  /api/users/group_basic/getGroupBasicsInfo:
+    get:
+      consumes:
+      - application/json
+      description: 获取群基础信息详情说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.GroupBasicIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 获取群基础信息详情
+      tags:
+      - 群基础信息
+  /api/users/group_basic/getGroupBasicsList:
+    get:
+      consumes:
+      - application/json
+      description: 群基础信息说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetGroupBasicListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 群基础信息列表
+      tags:
+      - 群基础信息
+  /api/users/group_basic/updateGroupBasic:
+    post:
+      consumes:
+      - application/json
+      description: 更新群基础信息说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateGroupBasicRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 更新群基础信息
+      tags:
+      - 群基础信息
+  /api/users/messages/createMessages:
+    post:
+      consumes:
+      - application/json
+      description: 创建消息接口说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateMessagesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建消息
+      tags:
+      - 消息
+  /api/users/messages/deleteMessages:
+    get:
+      consumes:
+      - application/json
+      description: 删除消息接口说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.MessagesIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 删除消息
+      tags:
+      - 消息
+  /api/users/messages/getMessagesInfo:
+    get:
+      consumes:
+      - application/json
+      description: 获取消息详情说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.MessagesIdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 获取消息详情
+      tags:
+      - 消息
+  /api/users/messages/getMessagesList:
+    get:
+      consumes:
+      - application/json
+      description: 消息列表说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetMessagesListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 消息列表
+      tags:
+      - 消息
   /api/users/user_basic/createUser:
     post:
       consumes:
       - application/json
       description: 创建用户基础信息
       parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
       - description: 请求参数
         in: body
         name: data
@@ -188,6 +898,16 @@ paths:
       - application/json
       description: 删除用户接口说明
       parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
       - description: 请求参数
         in: body
         name: data
@@ -214,6 +934,16 @@ paths:
       - application/json
       description: 获取用户信息详情说明
       parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
       - description: 请求参数
         in: body
         name: data
@@ -240,6 +970,16 @@ paths:
       - application/json
       description: 用户列表说明
       parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
       - description: 请求参数
         in: body
         name: data
@@ -260,12 +1000,58 @@ paths:
       summary: 用户列表
       tags:
       - 用户基础信息
+  /api/users/user_basic/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录接口说明
+      parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 用户登录
+      tags:
+      - 用户基础信息
   /api/users/user_basic/updateUser:
     post:
       consumes:
       - application/json
       description: 更新用户信息说明
       parameters:
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
       - description: 请求参数
         in: body
         name: data
@@ -292,7 +1078,18 @@ paths:
       - application/json
       description: 接口说明
       parameters:
-      - description: 请求参数  @Param [参数名] [参数类型] [数据类型] [是否必填] [描述信息(可选)]
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: '请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body:
+          json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]'
         in: body
         name: data
         required: true
@@ -318,7 +1115,18 @@ paths:
       - application/json
       description: 接口说明CheckTest
       parameters:
-      - description: 请求参数  @Param [参数名] [参数类型] [数据类型] [是否必填] [描述信息(可选)]
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: '请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body:
+          json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]'
         in: body
         name: data
         required: true
@@ -344,7 +1152,18 @@ paths:
       - application/json
       description: 用于测试
       parameters:
-      - description: 请求参数
+      - description: Token
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: 小程序类型
+        in: header
+        name: x-applet-type
+        required: true
+        type: string
+      - description: '请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body:
+          json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]'
         in: body
         name: data
         required: true

@@ -18,7 +18,7 @@ import (
 // @Router /api/v1/example/helloworld [get]
 // @Param authorization header string true "Token"
 // @Param x-applet-type header string true "小程序类型"
-// @Param data  models.AAAA true "请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]"
+// @Param data body  models.AAAA true "请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]"
 // @Success 200 {string} helloworld
 // @Failure 500  {string} helloworld
 func Helloworld(g *gin.Context) {

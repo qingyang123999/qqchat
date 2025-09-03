@@ -15,6 +15,744 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/users/contact/createContact": {
+            "post": {
+                "description": "创建用户关系描述",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "创建用户关系",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateContactRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/contact/deleteContact": {
+            "get": {
+                "description": "删除用户关系接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "删除用户关系",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ContactIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/contact/getContactInfo": {
+            "get": {
+                "description": "获取用户关系详情详情说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "获取用户关系详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ContactIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/contact/getContactList": {
+            "get": {
+                "description": "用户关系列表说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "用户关系列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetContactListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/contact/updateContact": {
+            "post": {
+                "description": "更新用户关系信息说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户关系"
+                ],
+                "summary": "更新用户关系",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateContactRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/group_basic/createGroupBasic": {
+            "post": {
+                "description": "创建群基础信息接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群基础信息"
+                ],
+                "summary": "创建群基础信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateGroupBasicRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/group_basic/deleteGroupBasic": {
+            "get": {
+                "description": "删除群基础信息接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群基础信息"
+                ],
+                "summary": "删除群基础信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GroupBasicIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/group_basic/getGroupBasicsInfo": {
+            "get": {
+                "description": "获取群基础信息详情说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群基础信息"
+                ],
+                "summary": "获取群基础信息详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GroupBasicIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/group_basic/getGroupBasicsList": {
+            "get": {
+                "description": "群基础信息说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群基础信息"
+                ],
+                "summary": "群基础信息列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetGroupBasicListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/group_basic/updateGroupBasic": {
+            "post": {
+                "description": "更新群基础信息说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群基础信息"
+                ],
+                "summary": "更新群基础信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateGroupBasicRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/messages/createMessages": {
+            "post": {
+                "description": "创建消息接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息"
+                ],
+                "summary": "创建消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateMessagesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/messages/deleteMessages": {
+            "get": {
+                "description": "删除消息接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息"
+                ],
+                "summary": "删除消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MessagesIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/messages/getMessagesInfo": {
+            "get": {
+                "description": "获取消息详情说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息"
+                ],
+                "summary": "获取消息详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MessagesIdRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/messages/getMessagesList": {
+            "get": {
+                "description": "消息列表说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息"
+                ],
+                "summary": "消息列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetMessagesListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/user_basic/createUser": {
             "post": {
                 "description": "创建用户基础信息",
@@ -29,6 +767,20 @@ const docTemplate = `{
                 ],
                 "summary": "创建用户",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "请求参数",
                         "name": "data",
@@ -63,6 +815,20 @@ const docTemplate = `{
                 ],
                 "summary": "删除用户",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "请求参数",
                         "name": "data",
@@ -104,6 +870,20 @@ const docTemplate = `{
                 "summary": "获取用户信息详情",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "请求参数",
                         "name": "data",
                         "in": "body",
@@ -144,12 +924,80 @@ const docTemplate = `{
                 "summary": "用户列表",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "请求参数",
                         "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/model.GetUsersListRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/user_basic/login": {
+            "post": {
+                "description": "用户登录接口说明",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户基础信息"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginRequest"
                         }
                     }
                 ],
@@ -183,6 +1031,20 @@ const docTemplate = `{
                 ],
                 "summary": "更新用户信息",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "请求参数",
                         "name": "data",
@@ -224,7 +1086,21 @@ const docTemplate = `{
                 "summary": "接口名称",
                 "parameters": [
                     {
-                        "description": "请求参数  @Param [参数名] [参数类型] [数据类型] [是否必填] [描述信息(可选)]",
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数  @Param [参数名] [参数类型=\u003e query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -264,7 +1140,21 @@ const docTemplate = `{
                 "summary": "接口名称CheckTest",
                 "parameters": [
                     {
-                        "description": "请求参数  @Param [参数名] [参数类型] [数据类型] [是否必填] [描述信息(可选)]",
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数  @Param [参数名] [参数类型=\u003e query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -304,7 +1194,21 @@ const docTemplate = `{
                 "summary": "测试接口",
                 "parameters": [
                     {
-                        "description": "请求参数",
+                        "type": "string",
+                        "description": "Token",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "小程序类型",
+                        "name": "x-applet-type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "请求参数  @Param [参数名] [参数类型=\u003e query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -343,6 +1247,108 @@ const docTemplate = `{
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "model.ContactIdRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateContactRequest": {
+            "type": "object",
+            "required": [
+                "owerId",
+                "targetId",
+                "type"
+            ],
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "owerId": {
+                    "type": "integer"
+                },
+                "targetId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateGroupBasicRequest": {
+            "type": "object",
+            "required": [
+                "icon",
+                "name",
+                "owerId",
+                "type"
+            ],
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owerId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateMessagesRequest": {
+            "type": "object",
+            "required": [
+                "content",
+                "formId",
+                "id",
+                "media",
+                "targetId",
+                "type"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "formId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "media": {
+                    "type": "string"
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "targetId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         },
@@ -399,6 +1405,126 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 2
+                }
+            }
+        },
+        "model.GetContactListRequest": {
+            "type": "object",
+            "required": [
+                "page",
+                "pageSize"
+            ],
+            "properties": {
+                "owerId": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "targetId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.GetGroupBasicListRequest": {
+            "type": "object",
+            "required": [
+                "page",
+                "pageSize"
+            ],
+            "properties": {
+                "createdAtt": {
+                    "$ref": "#/definitions/utils.CustomTime"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owerId": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "$ref": "#/definitions/utils.CustomTime"
+                }
+            }
+        },
+        "model.GetMessagesListRequest": {
+            "type": "object",
+            "required": [
+                "page",
+                "pageSize"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "createdAtt": {
+                    "$ref": "#/definitions/utils.CustomTime"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "formId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "media": {
+                    "type": "string"
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pic": {
+                    "type": "string"
+                },
+                "targetId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "$ref": "#/definitions/utils.CustomTime"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         },
@@ -459,6 +1585,17 @@ const docTemplate = `{
                 }
             }
         },
+        "model.GroupBasicIdRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.LoginRequest": {
             "type": "object",
             "required": [
@@ -473,7 +1610,76 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 5
+                    "minLength": 2
+                }
+            }
+        },
+        "model.MessagesIdRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UpdateContactRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "owerId",
+                "targetId",
+                "type"
+            ],
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "owerId": {
+                    "type": "integer"
+                },
+                "targetId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UpdateGroupBasicRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "createdAtt": {
+                    "$ref": "#/definitions/utils.CustomTime"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owerId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "$ref": "#/definitions/utils.CustomTime"
                 }
             }
         },
@@ -500,9 +1706,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer",
-                    "maximum": 20,
-                    "minimum": 5
+                    "type": "integer"
                 },
                 "identity": {
                     "type": "string"
@@ -553,6 +1757,14 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.CustomTime": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
                     "type": "string"
                 }
             }
