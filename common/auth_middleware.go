@@ -28,12 +28,14 @@ func AuthMiddleware(secretKey string) gin.HandlerFunc {
 		contextUserBasic, err := ParseJwtToken(secretKey, tokenString)
 		if err != nil {
 			ErrorResponse(c, http.StatusUnauthorized, err.Error())
+			return
 		}
 
 		// 4. 提取用户信息并注入Context
 		err = SetUserToContext(c, contextUserBasic)
 		if err != nil {
 			ErrorResponse(c, http.StatusUnauthorized, err.Error())
+			return
 		}
 	}
 }
