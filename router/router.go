@@ -39,11 +39,32 @@ func Router() *gin.Engine {
 		// 注册中间件
 		userGroup.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
 
+		// 用户基础信息
 		userGroup.POST("/user_basic/createUser", service.ApiService.UserBasic.CreateUser)
 		userGroup.GET("/user_basic/getUsersList", service.ApiService.UserBasic.GetUsersList)
 		userGroup.GET("/user_basic/getUserInfo", service.ApiService.UserBasic.GetUsersInfo)
 		userGroup.POST("/user_basic/updateUser", service.ApiService.UserBasic.UpdateUser)
 		userGroup.GET("/user_basic/deleteUser", service.ApiService.UserBasic.DeleteUser)
+
+		// 用户关联关系
+		userGroup.POST("/contact/createContact", service.ApiService.Contact.CreateContact)
+		userGroup.GET("/contact/getContactList", service.ApiService.Contact.GetContactList)
+		userGroup.GET("/contact/getContactInfo", service.ApiService.Contact.GetContactInfo)
+		userGroup.POST("/contact/updateContact", service.ApiService.Contact.UpdateContact)
+		userGroup.GET("/contact/deleteContact", service.ApiService.Contact.DeleteContact)
+
+		// 群基础信息
+		userGroup.POST("/group_basic/createGroupBasic", service.ApiService.GroupBasic.CreateGroupBasic)
+		userGroup.GET("/group_basic/getGroupBasicsList", service.ApiService.GroupBasic.GetGroupBasicsList)
+		userGroup.GET("/group_basic/getGroupBasicsInfo", service.ApiService.GroupBasic.GetGroupBasicsInfo)
+		userGroup.POST("/group_basic/updateGroupBasic", service.ApiService.GroupBasic.UpdateGroupBasic)
+		userGroup.GET("/group_basic/deleteGroupBasic", service.ApiService.GroupBasic.DeleteGroupBasic)
+
+		// 消息
+		userGroup.POST("/messages/createMessages", service.ApiService.Messages.CreateMessages)
+		userGroup.GET("/messages/getMessagesList", service.ApiService.Messages.GetMessagesList)
+		userGroup.GET("/messages/getMessagesInfo", service.ApiService.Messages.GetMessagesInfo)
+		userGroup.GET("/messages/deleteMessages", service.ApiService.Messages.DeleteMessages)
 	}
 
 	// swagger 的所有配置;

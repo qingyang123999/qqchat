@@ -1,0 +1,131 @@
+package service
+
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"qqchat/common"
+	"qqchat/model"
+	"qqchat/models"
+)
+
+type Messages struct{}
+
+// @Tags 消息
+// @Summary 创建消息
+// @Schemes
+// @Description 创建消息接口说明
+// @Accept json
+// @Produce json
+// @Router /api/users/messages/createMessages [post]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
+// @Param data body model.CreateMessagesRequest true "请求参数"
+// @Success 200 {object} common.Response
+func (m *Messages) CreateMessages(c *gin.Context) {
+	var req model.CreateMessagesRequest
+	if err := common.ValidateRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := models.MessagesModel.CreateMessages(c, &req)
+	if err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// 业务逻辑处理...
+	common.SuccessResponse(c, gin.H{
+		"message": "创建成功",
+	})
+}
+
+// @Tags 消息
+// @Summary 消息列表
+// @Schemes
+// @Description 消息列表说明
+// @Accept json
+// @Produce json
+// @Router /api/users/messages/getMessagesList  [get]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
+// @Param data body model.GetMessagesListRequest true "请求参数"
+// @Success 200 {object} common.Response
+// @Failure 400  {string} common.Response
+func (m *Messages) GetMessagesList(c *gin.Context) {
+	var req model.GetMessagesListRequest
+	if err := common.ValidateRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err, users := models.MessagesModel.GetMessagesList(c, &req)
+	if err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// 业务逻辑处理...
+	common.SuccessResponse(c, users)
+}
+
+// @Tags 消息
+// @Summary 获取消息详情
+// @Schemes
+// @Description 获取消息详情说明
+// @Accept json
+// @Produce json
+// @Router /api/users/messages/getMessagesInfo [get]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
+// @Param data body model.MessagesIdRequest true "请求参数"
+// @Success 200 {object} common.Response
+// @Failure 400  {string} common.Response
+func (m *Messages) GetMessagesInfo(c *gin.Context) {
+	var req model.MessagesIdRequest
+	if err := common.ValidateRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	//u, _ :=common.GetUserFromContext(c)
+	//id:=u.ID
+	err, userInfo := models.MessagesModel.GetMessagesInfo(c, &req)
+	if err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// 业务逻辑处理...
+	common.SuccessResponse(c, userInfo)
+}
+
+// @Tags 消息
+// @Summary 删除消息
+// @Schemes
+// @Description 删除消息接口说明
+// @Accept json
+// @Produce json
+// @Router /api/users/messages/deleteMessages  [get]
+// @Param authorization header string true "Token"
+// @Param x-applet-type header string true "小程序类型"
+// @Param data body model.MessagesIdRequest  true "请求参数"
+// @Success 200 {object} common.Response
+// @Failure 400  {string} common.Response
+func (m *Messages) DeleteMessages(c *gin.Context) {
+	var req model.MessagesIdRequest
+	if err := common.ValidateRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := models.MessagesModel.DeleteMessages(c, &req)
+	if err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// 业务逻辑处理...
+	common.SuccessResponse(c, gin.H{
+		"message": "删除成功",
+	})
+}
