@@ -67,10 +67,14 @@ func RedisDbPublish(ctx context.Context, channel string, content interface{}) er
 	return err
 }
 
-// RedisDbSubscribe  发布消息到channel  Redis的发布/订阅（Pub/Sub）模式
+// RedisDbSubscribe  订阅channel  Redis的发布/订阅（Pub/Sub）模式
+func RedisDbSubscribe(ctx context.Context, channel string) *redis.PubSub {
+	return RedisDb.Subscribe(ctx, channel)
+}
+
+// RedisDbReceiveMessage  从channel接收消息  Redis的发布/订阅（Pub/Sub）模式
 // param  channel 消息的目标频道名称
-func RedisDbSubscribe(ctx context.Context, channel string) (message string, err error) {
-	pubSub := RedisDb.Subscribe(ctx, channel)
+func RedisDbReceiveMessage(ctx context.Context, pubSub *redis.PubSub) (message string, err error) {
 	receiveMessage, err := pubSub.ReceiveMessage(ctx)
 	if err != nil {
 		return "", err

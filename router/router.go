@@ -27,6 +27,7 @@ func Router() *gin.Engine {
 	// websocketGroup
 	websocketGroup := router.Group("/api/websocket")
 	{
+		websocketGroup.GET("/sendmsg", service.ApiService.SysWebSocket.SendMsg)
 		websocketGroup.POST("/sendmsg", service.ApiService.SysWebSocket.SendMsg)
 	}
 

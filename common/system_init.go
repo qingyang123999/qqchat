@@ -6,7 +6,7 @@ import (
 )
 
 // 全局上下文 生命周期控制
-var ctx = context.Background()
+var Ctx = context.Background()
 
 func init() {
 	// 初始化配置
@@ -16,5 +16,5 @@ func init() {
 	// 初始化gorm-mysql数据库
 	InitGorm()
 	//初始化redis
-	InitRedis(ctx)
+	InitRedis(Ctx)
 }
