@@ -17,7 +17,6 @@ type UserBasic struct{}
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/createUser [post]
-// @Param authorization header string true "Token"
 // @Param x-applet-type header string true "小程序类型"
 // @Param data body model.CreateUserRequest true "请求参数"
 // @Success 200 {object} common.Response
@@ -168,7 +167,6 @@ func (ub *UserBasic) DeleteUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /api/users/user_basic/login [post]
-// @Param authorization header string true "Token"
 // @Param x-applet-type header string true "小程序类型"
 // @Param data body model.LoginRequest true "请求参数"
 // @Success 200 {object} common.Response

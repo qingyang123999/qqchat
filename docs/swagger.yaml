@@ -866,11 +866,6 @@ paths:
       - application/json
       description: 创建用户基础信息
       parameters:
-      - description: Token
-        in: header
-        name: authorization
-        required: true
-        type: string
       - description: 小程序类型
         in: header
         name: x-applet-type
@@ -1006,11 +1001,6 @@ paths:
       - application/json
       description: 用户登录接口说明
       parameters:
-      - description: Token
-        in: header
-        name: authorization
-        required: true
-        type: string
       - description: 小程序类型
         in: header
         name: x-applet-type

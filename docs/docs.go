@@ -769,13 +769,6 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "小程序类型",
                         "name": "x-applet-type",
                         "in": "header",
@@ -977,13 +970,6 @@ const docTemplate = `{
                 ],
                 "summary": "用户登录",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Token",
-                        "name": "authorization",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "小程序类型",
