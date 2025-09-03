@@ -31,7 +31,8 @@ func Router() *gin.Engine {
 		websocketGroup.GET("/sendmsg2", service.ApiService.SysWebSocket.SendMsgTest2) // websocket使用的是get方式
 	}
 
-	router.POST("/api/users/user_basic/login", service.ApiService.UserBasic.Login) // 登录
+	router.POST("/api/users//user_basic/createUser", service.ApiService.UserBasic.CreateUser) // 创建 =注册
+	router.POST("/api/users/user_basic/login", service.ApiService.UserBasic.Login)            // 登录
 
 	// 用户路由组
 	userGroup := router.Group("/api/users")
@@ -40,7 +41,6 @@ func Router() *gin.Engine {
 		userGroup.Use(common.AuthMiddleware(viper.GetString("Jwt.key"))) // 鉴权token中间件
 
 		// 用户基础信息
-		userGroup.POST("/user_basic/createUser", service.ApiService.UserBasic.CreateUser)
 		userGroup.GET("/user_basic/getUsersList", service.ApiService.UserBasic.GetUsersList)
 		userGroup.GET("/user_basic/getUserInfo", service.ApiService.UserBasic.GetUsersInfo)
 		userGroup.POST("/user_basic/updateUser", service.ApiService.UserBasic.UpdateUser)
