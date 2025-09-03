@@ -94,6 +94,7 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context) {
 		return
 	}
 
+	userInfo.Password = ""
 	// 业务逻辑处理...
 	common.SuccessResponse(c, userInfo)
 }
