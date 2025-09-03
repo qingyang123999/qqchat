@@ -41,6 +41,7 @@ func (web *SysWebSocket) SendMsgTest1(c *gin.Context) {
 		return
 	}
 	fmt.Println("成功连接 地址：", conn.RemoteAddr().String())
+	defer conn.Close()
 
 	// 用于发送心跳的ticker 3秒一次
 	ticker := time.NewTicker(3 * time.Second)
@@ -113,10 +114,15 @@ func (web *SysWebSocket) SendMsgTest2(c *gin.Context) {
 		return
 	}
 	fmt.Println("成功连接 地址：", conn.RemoteAddr().String())
+	defer conn.Close()
 
 	// 用于发送心跳的ticker 3秒一次
 	ticker := time.NewTicker(3 * time.Second)
 	defer ticker.Stop()
+
+	// 错误计数器
+	errorCurrentCount := 0 // 当前读取错误次数
+	maxErrorCount := 3     // 设置可以最大读取错误次数
 
 	// 读取数据
 	go func() {
@@ -132,11 +138,20 @@ func (web *SysWebSocket) SendMsgTest2(c *gin.Context) {
 			if err != nil {
 				// 检查是否为预期的关闭错误
 				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+
+					errorCurrentCount++ // 读取错误一次就加一
 					fmt.Printf("WebSocket读取错误: %v\n", err)
+					if errorCurrentCount > maxErrorCount {
+						fmt.Printf("WebSocket读取错误次数超出maxErrorCount: %v 关闭连接\n", maxErrorCount)
+						return
+					}
+
 				} else {
 					fmt.Printf("WebSocket连接关闭: %v\n", err)
 					return
 				}
+			} else {
+				errorCurrentCount = 0 // 成功读取消息，重置错误计数器
 			}
 
 			// 写入redis中 channel
