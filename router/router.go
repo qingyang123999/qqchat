@@ -27,7 +27,8 @@ func Router() *gin.Engine {
 	// websocketGroup
 	websocketGroup := router.Group("/api/websocket")
 	{
-		websocketGroup.GET("/sendmsg", service.ApiService.SysWebSocket.SendMsgTest1) // websocket使用的是get方式
+		websocketGroup.GET("/sendmsg", service.ApiService.SysWebSocket.SendMsgTest1)  // websocket使用的是get方式
+		websocketGroup.GET("/sendmsg2", service.ApiService.SysWebSocket.SendMsgTest2) // websocket使用的是get方式
 	}
 
 	router.POST("/api/users/user_basic/login", service.ApiService.UserBasic.Login) // 登录
