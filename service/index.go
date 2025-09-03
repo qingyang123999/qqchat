@@ -79,7 +79,7 @@ func GetIndex(ctx *gin.Context) {
 // @Failure 400  {string} common.Response
 func CheckTest(c *gin.Context) {
 	var req model.LoginRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}

@@ -23,7 +23,7 @@ type Messages struct{}
 // @Success 200 {object} common.Response
 func (m *Messages) CreateMessages(c *gin.Context) {
 	var req model.CreateMessagesRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -54,7 +54,7 @@ func (m *Messages) CreateMessages(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (m *Messages) GetMessagesList(c *gin.Context) {
 	var req model.GetMessagesListRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -83,7 +83,7 @@ func (m *Messages) GetMessagesList(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (m *Messages) GetMessagesInfo(c *gin.Context) {
 	var req model.MessagesIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -113,7 +113,7 @@ func (m *Messages) GetMessagesInfo(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (m *Messages) DeleteMessages(c *gin.Context) {
 	var req model.MessagesIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}

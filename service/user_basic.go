@@ -22,7 +22,7 @@ type UserBasic struct{}
 // @Success 200 {object} common.Response
 func (ub *UserBasic) CreateUser(c *gin.Context) {
 	var req model.CreateUserRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -53,7 +53,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ub *UserBasic) GetUsersList(c *gin.Context) {
 	var req model.GetUsersListRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -82,7 +82,7 @@ func (ub *UserBasic) GetUsersList(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ub *UserBasic) GetUsersInfo(c *gin.Context) {
 	var req model.UserIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -112,7 +112,7 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ub *UserBasic) UpdateUser(c *gin.Context) {
 	var req model.UpdateUserRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -143,7 +143,7 @@ func (ub *UserBasic) UpdateUser(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ub *UserBasic) DeleteUser(c *gin.Context) {
 	var req model.UserIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -173,7 +173,7 @@ func (ub *UserBasic) DeleteUser(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ub *UserBasic) Login(c *gin.Context) {
 	var req model.LoginRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}

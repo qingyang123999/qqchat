@@ -23,7 +23,7 @@ type GroupBasic struct{}
 // @Success 200 {object} common.Response
 func (gb *GroupBasic) CreateGroupBasic(c *gin.Context) {
 	var req model.CreateGroupBasicRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -54,7 +54,7 @@ func (gb *GroupBasic) CreateGroupBasic(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (gb *GroupBasic) GetGroupBasicsList(c *gin.Context) {
 	var req model.GetGroupBasicListRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -83,7 +83,7 @@ func (gb *GroupBasic) GetGroupBasicsList(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (gb *GroupBasic) GetGroupBasicsInfo(c *gin.Context) {
 	var req model.GroupBasicIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -113,7 +113,7 @@ func (gb *GroupBasic) GetGroupBasicsInfo(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (gb *GroupBasic) UpdateGroupBasic(c *gin.Context) {
 	var req model.UpdateGroupBasicRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -144,7 +144,7 @@ func (gb *GroupBasic) UpdateGroupBasic(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (gb *GroupBasic) DeleteGroupBasic(c *gin.Context) {
 	var req model.GroupBasicIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}

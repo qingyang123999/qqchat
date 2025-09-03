@@ -23,7 +23,7 @@ type Contact struct{}
 // @Success 200 {object} common.Response
 func (ct *Contact) CreateContact(c *gin.Context) {
 	var req model.CreateContactRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -54,7 +54,7 @@ func (ct *Contact) CreateContact(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ct *Contact) GetContactList(c *gin.Context) {
 	var req model.GetContactListRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -83,7 +83,7 @@ func (ct *Contact) GetContactList(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ct *Contact) GetContactInfo(c *gin.Context) {
 	var req model.ContactIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -113,7 +113,7 @@ func (ct *Contact) GetContactInfo(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ct *Contact) UpdateContact(c *gin.Context) {
 	var req model.UpdateContactRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -144,7 +144,7 @@ func (ct *Contact) UpdateContact(c *gin.Context) {
 // @Failure 400  {string} common.Response
 func (ct *Contact) DeleteContact(c *gin.Context) {
 	var req model.ContactIdRequest
-	if err := common.ValidateRequest(c, &req); err != nil {
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
