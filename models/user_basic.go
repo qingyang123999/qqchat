@@ -167,7 +167,11 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context, req *model.UserIdRequest) (err
 	//id:=context.ID
 	result := common.Db.Where("id=?", req.ID).First(&userInfo)
 	if result.Error != nil {
-		return result.Error, UserBasic{}
+		if result.RowsAffected == 0 {
+			return nil, UserBasic{}
+		} else {
+			return result.Error, UserBasic{}
+		}
 	}
 	return nil, userInfo
 }
@@ -175,7 +179,11 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context, req *model.UserIdRequest) (err
 func (ub *UserBasic) GetUsersInfoByUserName(userName string) (err error, userInfo UserBasic) {
 	result := common.Db.Where("username=?", userName).First(&userInfo)
 	if result.Error != nil {
-		return result.Error, UserBasic{}
+		if result.RowsAffected == 0 {
+			return nil, UserBasic{}
+		} else {
+			return result.Error, UserBasic{}
+		}
 	}
 	return nil, userInfo
 }
@@ -183,7 +191,11 @@ func (ub *UserBasic) GetUsersInfoByUserName(userName string) (err error, userInf
 func (ub *UserBasic) GetUsersInfoByPhone(phone string) (err error, userInfo UserBasic) {
 	result := common.Db.Where("phone=?", phone).First(&userInfo)
 	if result.Error != nil {
-		return result.Error, UserBasic{}
+		if result.RowsAffected == 0 {
+			return nil, UserBasic{}
+		} else {
+			return result.Error, UserBasic{}
+		}
 	}
 	return nil, userInfo
 }
@@ -191,7 +203,11 @@ func (ub *UserBasic) GetUsersInfoByPhone(phone string) (err error, userInfo User
 func (ub *UserBasic) GetUsersInfoByEmail(email string) (err error, userInfo UserBasic) {
 	result := common.Db.Where("email=?", email).First(&userInfo)
 	if result.Error != nil {
-		return result.Error, UserBasic{}
+		if result.RowsAffected == 0 {
+			return nil, UserBasic{}
+		} else {
+			return result.Error, UserBasic{}
+		}
 	}
 	return nil, userInfo
 }
