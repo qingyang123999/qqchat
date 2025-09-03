@@ -32,7 +32,7 @@ func GenerateJwtToken(user *ContextUserBasic, secretKey string, expiresIn time.D
 // ParseJwtToken 解析JWT Token
 // param  tokenString token 字符串
 // param  secretKey 秘钥 your-256-bit-secret
-func ParseJwtToken(tokenString string, secretKey string) (*ContextUserBasic, error) {
+func ParseJwtToken(secretKey string, tokenString string) (*ContextUserBasic, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
