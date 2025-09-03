@@ -11,7 +11,7 @@
  Target Server Version : 80405
  File Encoding         : 65001
 
- Date: 03/09/2025 17:25:07
+ Date: 03/09/2025 18:01:13
 */
 
 SET NAMES utf8mb4;
@@ -87,7 +87,7 @@ DROP TABLE IF EXISTS `user_basic`;
 CREATE TABLE `user_basic`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `password` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `email` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `identity` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -107,10 +107,6 @@ CREATE TABLE `user_basic`  (
 -- ----------------------------
 -- Records of user_basic
 -- ----------------------------
-INSERT INTO `user_basic` VALUES (32, 'HHHHF', 'm#$%UYIY', '18146495249', 'i.ffgytlydh@qq.com', '92', '131.125.153.142', '80', '2007-10-09 08:10:37', '1971-06-04 06:10:49', '1970-11-14 09:46:07', 1, 'incididunt ea cillum sint', '2025-08-28 18:57:49', '2025-08-28 18:57:49', NULL);
-INSERT INTO `user_basic` VALUES (33, 'HHHHF', 'm#$%UYIY', '18146495249', 'i.ffgytl1ydh@qq.com', '92', '131.125.153.142', '800', '2007-10-09 08:10:37', '1971-06-04 06:10:49', '1970-11-14 09:46:07', 1, 'incididu111cillum sint', '2025-08-28 18:58:03', '2025-08-28 18:58:03', NULL);
-INSERT INTO `user_basic` VALUES (34, 'JJJJJ', 'in @#$%^cons', '18626291539', 'i.ntndqkkueo@qq.com', '95', '234.74.184.102', '8245254', '1976-07-24 09:42:16', '2007-11-14 21:31:53', '1981-08-29 00:46:36', 1, 'consequat sed labore', '2025-08-28 18:58:38', '2025-08-28 18:58:38', NULL);
-INSERT INTO `user_basic` VALUES (35, 'JJJJJ', 'in @#$%^cons', '18626291539', 'i.ntndqkkueo@qq.com', '95', '234.74.184.102', '8245254', '1976-07-24 09:42:16', '2007-11-14 21:31:53', '1981-08-29 00:46:36', 1, 'consequat sed labore', '2025-08-28 18:58:40', '2025-08-28 18:58:40', '2025-08-28 19:22:51');
-INSERT INTO `user_basic` VALUES (36, 'HGFGH', 'incid!@#$%illum', '18159972164', 's.yoeb@qq.com', '53', '225.202.88.88', '7777', '2013-08-20 12:14:05', '2023-08-24 03:44:03', '1996-02-29 10:40:27', 0, 'Ut ad mollit', '2025-08-28 18:58:41', '2025-08-28 19:18:32', '2025-08-28 19:43:36');
+INSERT INTO `user_basic` VALUES (37, 'hanxia', '$2a$10$NVnslx4B8XVl8RnXc7cMmuxX/bOo3ju61V.DwUCAvyWVGn6vstmTW', '18174918548', 'g.sirdizbt@qq.com', '94', '186.84.86.178', '80', '2011-12-19 12:08:39', '1976-06-21 05:47:45', '1995-02-12 10:04:39', 0, 'mollit cupidatat est sunt', '2025-09-03 18:00:39', '2025-09-03 18:00:39', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
