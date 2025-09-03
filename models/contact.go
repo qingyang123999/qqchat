@@ -8,7 +8,7 @@ var ContactModel = Contact{}
 
 type Contact struct {
 	gorm.Model
-	ID       uint64 `gorm:"primaryKey;column:id"  json:"id"`
+	ID       uint   `gorm:"primaryKey;column:id"  json:"id"`
 	OwerId   uint   `gorm:"column:ower_id"        json:"owerId"`
 	TargetId uint   `gorm:"column:target_id"      json:"targetId"`
 	Type     uint   `gorm:"column:type"           json:"type"`

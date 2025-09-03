@@ -9,13 +9,12 @@ var GroupBasicModel = GroupBasic{}
 
 type GroupBasic struct {
 	gorm.Model
-	ID        uint64           `gorm:"primaryKey;column:id"  json:"id"`
+	ID        uint             `gorm:"primaryKey;column:id"  json:"id"`
 	Name      string           `gorm:"column:name"           json:"name"`
 	OwerId    uint             `gorm:"column:ower_id"        json:"owerId"`
 	Icon      string           `gorm:"column:icon"           json:"icon"`
 	Type      uint             `gorm:"column:type"           json:"type"`
 	Desc      string           `gorm:"column:desc"           json:"desc"`
-	Amount    uint64           `gorm:"column:amount"         json:"amount"`
 	CreatedAt utils.CustomTime `gorm:"column:created_at"     json:"createdAtt"`
 	UpdatedAt utils.CustomTime `gorm:"column:updated_at"     json:"updatedAt"`
 }
