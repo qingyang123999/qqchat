@@ -4,6 +4,14 @@
 
 APP_ENV: dev
 
+APP_SYSTEM:
+  PORT: 3000
+  IPV4:
+    A: 192
+    B: 168
+    C: 0
+    D: 22
+
 Mysql:
   dns: root:DHHdfghdfg@578571.@tcp(124.220.164.90:3306)/qqchat?charset=utf8mb4&parseTime=True&loc=Local
   LOG_DIR: logs/sql                  #mysql 日志目录
