@@ -138,7 +138,17 @@ func (m *Messages) SendUserMsg(c *gin.Context) {
 		return
 	}
 
-	// WebSocket连接建立后，HTTP响应机制不再适用
+	//注意：
+	//WebSocket连接建立后，HTTP响应机制不再适用
 	//改为使用日志记录错误信息，便于调试和监控
 	models.Chat(c.Writer, c.Request, req)
+
+	/***
+	由四个组件完成： clientMap：需要websocket发送的数据存储库； udpSendChan：接收websocket数据的存储库；  udp的客户端+udp的服务端=分布式数据流中间件；
+	整体流程：
+	udpSendChan将websocket中的数据存起来。
+	udp的客户端 将udpSendChan中的数据读取到 然后 发给udp的服务端
+	udp的服务端 拿到数据 之后做json解析，然后存到 clientMap中。
+	websocket 从clientMap 不停的读取数据。
+	*/
 }

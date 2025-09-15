@@ -126,8 +126,9 @@ type Node struct {
 	GroupSets set.Interface
 }
 
-// 映射关系
+// 映射关系  clientMap 需要发送的数据存储库  udpSendChan需要接收的数据存储库
 var clientMap map[uint]*Node = make(map[uint]*Node, 0)
+var udpSendChan chan []byte = make(chan []byte, 1024)
 
 // 读写锁
 var rwLock sync.RWMutex
@@ -214,8 +215,6 @@ func recvProc(node *Node) {
 		fmt.Printf("[ws]<<<<<<  messageType=%v, message=%v \n", messageType, message)
 	}
 }
-
-var udpSendChan chan []byte = make(chan []byte, 1024)
 
 func broadMsg(message []byte) {
 	udpSendChan <- message
