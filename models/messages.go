@@ -134,28 +134,32 @@ var rwLock sync.RWMutex
 
 // 需要：发送者id ，接受者id 消息类型，发送类型
 func Chat(writer http.ResponseWriter, request *http.Request, messagesRequest model.SendMessagesRequest) {
-	// 检验token
-	//token := request.Header.Get("token")
-	//query := request.URL.Query()
-	//id := query.Get("userId")
-	//userId, _ := strconv.ParseUint(id, 10, 64)
 	userId := uint64(messagesRequest.FormId)
-	//msgType := query.Get("msgType")
-	//targetId := query.Get("targetId")
-	//context := query.Get("context")
 
 	// WebSocket升级器配置
-	conn, err := (&websocket.Upgrader{
+	upgrader := websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
-	}).Upgrade(writer, request, nil)
+	}
+
+	conn, err := upgrader.Upgrade(writer, request, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("WebSocket upgrade error: %v\n", err)
 		return
 	}
+
+	// 延迟关闭连接
+	defer func() {
+		conn.Close()
+		// 从clientMap中移除用户添加了 defer 函数来确保连接关闭时能从 clientMap 中移除用户，防止内存泄漏
+		rwLock.Lock()
+		delete(clientMap, uint(userId))
+		rwLock.Unlock()
+		fmt.Printf("User %d disconnected\n", userId)
+	}()
 
 	// 获取conn
 	node := &Node{
@@ -170,11 +174,16 @@ func Chat(writer http.ResponseWriter, request *http.Request, messagesRequest mod
 	clientMap[uint(userId)] = node
 	rwLock.Unlock()
 
+	fmt.Printf("User %d connected to chat system\n", userId)
+
 	sendMsg(uint(userId), []byte("欢迎进入聊天系统"))
 	// 完成发送逻辑
 	go sendProc(node)
 	//完成接收者逻辑
 	go recvProc(node)
+
+	//// 阻塞以保持连接
+	//select {}
 }
 
 // 发送逻辑

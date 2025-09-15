@@ -138,5 +138,7 @@ func (m *Messages) SendUserMsg(c *gin.Context) {
 		return
 	}
 
+	// WebSocket连接建立后，HTTP响应机制不再适用
+	//改为使用日志记录错误信息，便于调试和监控
 	models.Chat(c.Writer, c.Request, req)
 }
