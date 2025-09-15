@@ -144,6 +144,7 @@ func (m *Messages) SendUserMsg(c *gin.Context) {
 	models.Chat(c.Writer, c.Request, req)
 
 	/***
+	消息 从 fromID 发给targetId
 	由四个组件完成： clientMap：需要websocket发送的数据存储库； udpSendChan：接收websocket数据的存储库；  udp的客户端+udp的服务端=分布式数据流中间件；
 	整体流程：
 	udpSendChan将websocket中的数据存起来。

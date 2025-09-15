@@ -181,7 +181,7 @@ func Chat(writer http.ResponseWriter, request *http.Request, messagesRequest mod
 	// 完成发送逻辑
 	go sendProc(node)
 	//完成接收者逻辑
-	go recvProc(node)
+	recvProc(node)
 
 	//// 阻塞以保持连接
 	//select {}
@@ -298,6 +298,7 @@ func dispatch(data []byte) {
 	switch msg.Type {
 	case 1: // 私信
 		sendMsg(msg.TargetId, data) // 私信
+		//sendMsg(msg.FormId, []byte("接收后经过加工处理的数据： "+string(data))) // 私信
 		//case 2:
 		//	sendGroupMsg() // 群发
 		//case 3:
@@ -306,6 +307,8 @@ func dispatch(data []byte) {
 
 	}
 }
+
+// 把信息发给userid对应的连接
 func sendMsg(userId uint, msg []byte) {
 	rwLock.RLock()
 	defer rwLock.RUnlock()
