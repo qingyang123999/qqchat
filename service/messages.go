@@ -141,10 +141,16 @@ func (m *Messages) SendUserMsg(c *gin.Context) {
 	//注意：
 	//WebSocket连接建立后，HTTP响应机制不再适用
 	//改为使用日志记录错误信息，便于调试和监控
+
+	// 发送格式为json格式。 消息 从 fromID 发给targetId
+	//{
+	//	"formId": 37,
+	//	"type": 1,
+	//	"targetId": 37
+	//}
 	models.Chat(c.Writer, c.Request, req)
 
 	/***
-	消息 从 fromID 发给targetId
 	由四个组件完成： clientMap：需要websocket发送的数据存储库； udpSendChan：接收websocket数据的存储库；  udp的客户端+udp的服务端=分布式数据流中间件；
 	整体流程：
 	udpSendChan将websocket中的数据存起来。

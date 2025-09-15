@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/spf13/viper"
 	"gopkg.in/fatih/set.v0"
 	"gorm.io/gorm"
 	"net"
@@ -228,8 +229,8 @@ func init() {
 // 完成udp数据发送协程
 func udpSendProc() {
 	conn, err := net.DialUDP("udp", nil, &net.UDPAddr{
-		IP:   net.IPv4(192, 168, 0, 22),
-		Port: 3000,
+		IP:   net.IPv4(byte(viper.GetInt("APP_SYSTEM.IPV4.A")), byte(viper.GetInt("APP_SYSTEM.IPV4.B")), byte(viper.GetInt("APP_SYSTEM.IPV4.C")), byte(viper.GetInt("APP_SYSTEM.IPV4.D"))), //
+		Port: viper.GetInt("APP_SYSTEM.PORT"),
 	})
 	defer conn.Close()
 	if err != nil {
@@ -298,6 +299,11 @@ func dispatch(data []byte) {
 	switch msg.Type {
 	case 1: // 私信
 		sendMsg(msg.TargetId, data) // 私信
+		//{
+		//	"formId": 37,
+		//	"type": 1,
+		//	"targetId": 37
+		//}
 		//sendMsg(msg.FormId, []byte("接收后经过加工处理的数据： "+string(data))) // 私信
 		//case 2:
 		//	sendGroupMsg() // 群发
