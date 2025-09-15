@@ -1,12 +1,18 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
+	"gopkg.in/fatih/set.v0"
 	"gorm.io/gorm"
+	"net"
+	"net/http"
 	"qqchat/common"
 	"qqchat/model"
 	"qqchat/utils"
+	"sync"
 )
 
 var MessagesModel = Messages{}
@@ -111,4 +117,177 @@ func (m *Messages) DeleteMessages(c *gin.Context, req *model.MessagesIdRequest) 
 	}
 
 	return nil
+}
+
+type Node struct {
+	Conn      *websocket.Conn
+	DataQueue chan []byte
+	GroupSets set.Interface
+}
+
+// 映射关系
+var clientMap map[uint]*Node = make(map[uint]*Node, 0)
+
+// 读写锁
+var rwLock sync.RWMutex
+
+// 需要：发送者id ，接受者id 消息类型，发送类型
+func Chat(writer http.ResponseWriter, request *http.Request, messagesRequest model.SendMessagesRequest) {
+	// 检验token
+	//token := request.Header.Get("token")
+	//query := request.URL.Query()
+	//id := query.Get("userId")
+	//userId, _ := strconv.ParseUint(id, 10, 64)
+	userId := uint64(messagesRequest.FormId)
+	//msgType := query.Get("msgType")
+	//targetId := query.Get("targetId")
+	//context := query.Get("context")
+
+	// WebSocket升级器配置
+	conn, err := (&websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}).Upgrade(writer, request, nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// 获取conn
+	node := &Node{
+		Conn:      conn,
+		DataQueue: make(chan []byte, 50),
+		GroupSets: set.New(set.ThreadSafe),
+	}
+
+	// 用户关系
+	// userid 跟 node绑定 并加锁
+	rwLock.Lock()
+	clientMap[uint(userId)] = node
+	rwLock.Unlock()
+
+	sendMsg(uint(userId), []byte("欢迎进入聊天系统"))
+	// 完成发送逻辑
+	go sendProc(node)
+	//完成接收者逻辑
+	go recvProc(node)
+}
+
+// 发送逻辑
+func sendProc(node *Node) {
+	for {
+		select {
+		case data := <-node.DataQueue:
+			err := node.Conn.WriteMessage(websocket.TextMessage, data)
+			if err != nil {
+				//node.Conn.Close()
+				fmt.Println(err)
+				return
+			}
+		}
+	}
+}
+
+// 接收逻辑
+func recvProc(node *Node) {
+	for {
+		messageType, message, err := node.Conn.ReadMessage()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		broadMsg(message)
+		fmt.Printf("[ws]<<<<<<  messageType=%v, message=%v", messageType, message)
+	}
+}
+
+var udpSendChan chan []byte = make(chan []byte, 1024)
+
+func broadMsg(message []byte) {
+	udpSendChan <- message
+}
+
+func init() {
+	go udpSendProc()
+	go udpRecvProc()
+}
+
+// 完成udp数据发送协程
+func udpSendProc() {
+	conn, err := net.DialUDP("udp", nil, &net.UDPAddr{
+		IP:   net.IPv4(192, 168, 0, 22),
+		Port: 3000,
+	})
+	defer conn.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for {
+		select {
+		case data := <-udpSendChan:
+			_, err = conn.Write(data)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
+	}
+}
+
+// 完成udp数据接收协程
+func udpRecvProc() {
+	conn, err := net.ListenUDP("udp", &net.UDPAddr{
+		IP:   net.IPv4zero, // 0.0.0.0所有的都皆可以接收
+		Port: 3000,
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	defer conn.Close()
+
+	for {
+		var buff = make([]byte, 1024)
+		_, err = conn.Read(buff)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		dispatch(buff)
+	}
+}
+
+// 后端调度的逻辑处理
+func dispatch(data []byte) {
+	msg := Messages{}
+	err := json.Unmarshal(data, &msg)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	switch msg.Type {
+	case 1: // 私信
+		sendMsg(msg.TargetId, data) // 私信
+		//case 2:
+		//	sendGroupMsg() // 群发
+		//case 3:
+		//	sendAllMsg() // 广播
+		//default:
+
+	}
+}
+func sendMsg(userId uint, msg []byte) {
+	rwLock.RLock()
+	defer rwLock.RUnlock()
+	node, ok := clientMap[userId]
+	if ok {
+		node.DataQueue <- msg
+		return
+	}
 }

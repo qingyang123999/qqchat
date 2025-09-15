@@ -27,8 +27,9 @@ func Router() *gin.Engine {
 	// websocketGroup
 	websocketGroup := router.Group("/api/websocket")
 	{
-		websocketGroup.GET("/sendmsg", service.ApiService.SysWebSocket.SendMsgTest1)  // websocket使用的是get方式
-		websocketGroup.GET("/sendmsg2", service.ApiService.SysWebSocket.SendMsgTest2) // websocket使用的是get方式
+		websocketGroup.GET("/sendmsg", service.ApiService.SysWebSocket.SendMsgTest1)         // websocket使用的是get方式
+		websocketGroup.GET("/sendmsg2", service.ApiService.SysWebSocket.SendMsgTest2)        // websocket使用的是get方式
+		websocketGroup.GET("/messages/sendUserMsg", service.ApiService.Messages.SendUserMsg) // 发送消息
 	}
 
 	router.POST("/api/users//user_basic/createUser", service.ApiService.UserBasic.CreateUser) // 创建 =注册
@@ -65,6 +66,7 @@ func Router() *gin.Engine {
 		userGroup.GET("/messages/getMessagesList", service.ApiService.Messages.GetMessagesList)
 		userGroup.GET("/messages/getMessagesInfo", service.ApiService.Messages.GetMessagesInfo)
 		userGroup.GET("/messages/deleteMessages", service.ApiService.Messages.DeleteMessages)
+		//userGroup.GET("/messages/sendUserMsg", service.ApiService.Messages.SendUserMsg) // 发送消息
 	}
 
 	// swagger 的所有配置;

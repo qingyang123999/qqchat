@@ -129,3 +129,14 @@ func (m *Messages) DeleteMessages(c *gin.Context) {
 		"message": "删除成功",
 	})
 }
+
+// 发送消息
+func (m *Messages) SendUserMsg(c *gin.Context) {
+	var req model.SendMessagesRequest
+	if err := common.ValidateQueryRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	models.Chat(c.Writer, c.Request, req)
+}

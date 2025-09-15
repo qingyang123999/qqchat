@@ -33,3 +33,8 @@ type GetMessagesListRequest struct {
 type MessagesIdRequest struct {
 	ID uint64 `json:"id" form:"id" binding:"required"`
 }
+
+type SendMessagesRequest struct {
+	FormId   uint `gorm:"column:form_id"        json:"formId"     form:"formId"     binding:"required"`
+	TargetId uint `gorm:"column:target_id"      json:"targetId"   form:"targetId"   binding:"omitempty"`
+}

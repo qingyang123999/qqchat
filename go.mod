@@ -17,6 +17,7 @@ require (
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.8.12
 	golang.org/x/crypto v0.32.0
+	gopkg.in/fatih/set.v0 v0.2.1
 	gorm.io/driver/mysql v1.6.0
 	gorm.io/gorm v1.30.1
 )
