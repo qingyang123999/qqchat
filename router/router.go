@@ -66,7 +66,7 @@ func Router() *gin.Engine {
 		userGroup.GET("/messages/getMessagesList", service.ApiService.Messages.GetMessagesList)
 		userGroup.GET("/messages/getMessagesInfo", service.ApiService.Messages.GetMessagesInfo)
 		userGroup.GET("/messages/deleteMessages", service.ApiService.Messages.DeleteMessages)
-		//userGroup.GET("/messages/sendUserMsg", service.ApiService.Messages.SendUserMsg) // 发送消息
+		userGroup.GET("/messages/sendUserMsg", service.ApiService.Messages.SendUserMsg) // 发送消息
 	}
 
 	// swagger 的所有配置;

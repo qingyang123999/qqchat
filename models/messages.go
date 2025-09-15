@@ -1,6 +1,7 @@
 package models
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -164,7 +165,7 @@ func Chat(writer http.ResponseWriter, request *http.Request, messagesRequest mod
 	}
 
 	// 用户关系
-	// userid 跟 node绑定 并加锁
+	// userid 跟 node绑定 并加写锁
 	rwLock.Lock()
 	clientMap[uint(userId)] = node
 	rwLock.Unlock()
@@ -199,8 +200,9 @@ func recvProc(node *Node) {
 			fmt.Println(err)
 			return
 		}
+		// 直接发送消息，不进行额外处理
 		broadMsg(message)
-		fmt.Printf("[ws]<<<<<<  messageType=%v, message=%v", messageType, message)
+		fmt.Printf("[ws]<<<<<<  messageType=%v, message=%v \n", messageType, message)
 	}
 }
 
@@ -230,10 +232,14 @@ func udpSendProc() {
 	for {
 		select {
 		case data := <-udpSendChan:
-			_, err = conn.Write(data)
-			if err != nil {
-				fmt.Println(err)
-				return
+			// 只发送实际数据，不发送缓冲区中剩余的部分
+			data = bytes.Trim(data, "\x00")
+			if len(data) > 0 {
+				_, err = conn.Write(data)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
 			}
 		}
 	}
@@ -254,21 +260,31 @@ func udpRecvProc() {
 
 	for {
 		var buff = make([]byte, 1024)
-		_, err = conn.Read(buff)
+		n, err := conn.Read(buff)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		dispatch(buff)
+		// 只处理实际读取的数据
+		dispatch(buff[:n])
 	}
 }
 
 // 后端调度的逻辑处理
 func dispatch(data []byte) {
+	// 去除首尾的空字符和null字符
+	data = bytes.Trim(data, "\x00")
+
+	// 检查是否为空
+	if len(data) == 0 {
+		fmt.Println("Received empty message")
+		return
+	}
+
 	msg := Messages{}
 	err := json.Unmarshal(data, &msg)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("JSON unmarshal error: %v, data: %s\n", err, string(data))
 		return
 	}
 	switch msg.Type {
