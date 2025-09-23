@@ -13,11 +13,18 @@ import (
 func Router() *gin.Engine {
 	router := gin.Default()
 
+	//  =============== 前后端不分离写法 =================================
 	//静态资源
 	router.Static("/asset", "asset/")
 	router.StaticFile("/favicon.ico", "asset/images/favicon.ico")
 	router.LoadHTMLGlob("views/**/*")
 
+	//首页
+	router.GET("/", service.GetIndex)
+	router.GET("/index", service.GetIndex)
+	router.POST("/api/users/user_basic/findUserByNameAndPwd", service.ApiService.UserBasic.FindUserByNameAndPwd) // 用户登录并获取用户信息
+
+	//   ====================   前后端分离写法    ========================
 	// 注册中间件
 	router.Use(qqlog.LoggerMiddleware())        // 日志中间件
 	router.Use(common.ErrorHandlerMiddleware()) //全局错误处理中间件
@@ -25,9 +32,9 @@ func Router() *gin.Engine {
 	common.InitValidator() // 初始化  自定义校验器 【暂时没用到】
 
 	// 测试 接口
-	router.GET("/index", service.GetIndex)
+	router.GET("/api/v1/example/index", service.Index)
 	router.GET("/api/v1/example/helloworld", service.Helloworld)
-	router.GET("/checkTest", service.CheckTest)
+	router.GET("/api/v1/example/checkTest", service.CheckTest)
 
 	// websocketGroup
 	websocketGroup := router.Group("/api/websocket")

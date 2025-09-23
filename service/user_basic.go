@@ -190,3 +190,34 @@ func (ub *UserBasic) Login(c *gin.Context) {
 		"token": token,
 	})
 }
+
+// @Tags 用户基础信息
+// @Summary 用户登录并获取用户信息
+// @Schemes
+// @Description 用户登录并获取用户信息接口说明
+// @Accept json
+// @Produce json
+// @Router /api/users/user_basic/findUserByNameAndPwd [post]
+// @Param x-applet-type header string true "小程序类型"
+// @Param data body model.LoginRequest true "请求参数"
+// @Success 200 {object} common.Response
+// @Failure 400  {string} common.Response
+func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context) {
+	var req model.LoginRequest
+	if err := common.ValidateJSONRequest(c, &req); err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err, token, userInfo := models.UserBasicModel.FindUserByNameAndPwd(c, &req)
+	if err != nil {
+		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	// 业务逻辑处理...
+	common.SuccessResponse(c, gin.H{
+		"token":    token,
+		"userInfo": userInfo,
+	})
+}

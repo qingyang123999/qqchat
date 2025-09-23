@@ -1,89 +1,73 @@
 package service
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"qqchat/common"
 	"qqchat/model"
 	"qqchat/models"
-	"qqchat/utils"
+	"strconv"
+	"text/template"
+
+	"github.com/gin-gonic/gin"
 )
 
-// @Tags 目录名称
-// @Summary 接口名称
-// @Schemes
-// @Description 接口说明
-// @Accept json
-// @Produce json
-// @Router /api/v1/example/helloworld [get]
-// @Param authorization header string true "Token"
-// @Param x-applet-type header string true "小程序类型"
-// @Param data body  models.AAAA true "请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]"
-// @Success 200 {string} helloworld
-// @Failure 500  {string} helloworld
-func Helloworld(g *gin.Context) {
-	g.JSON(http.StatusOK, "helloworld")
-}
-
-// @Tags 测试目录
-// @Summary 测试接口
-// @Schemes
-// @Description 用于测试
-// @Accept json
-// @Produce json
+// GetIndex
+// @Tags 首页
+// @Success 200 {string} welcome
 // @Router /index [get]
-// @Param authorization header string true "Token"
-// @Param x-applet-type header string true "小程序类型"
-// @Param data body models.AAAA true "请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]"
-// @Success   200  {object}  models.AAAA
-// @Failure   500  {object}  models.AAAA
-func GetIndex(ctx *gin.Context) {
-
-	model := models.UserBasic{
-		Username:      "tan",
-		Password:      "111",
-		Phone:         "15874894579",
-		Email:         "11435345@qq.com",
-		Identity:      "dfdgdfgsd",
-		ClientIP:      "125.22.00.123",
-		ClientPort:    "80",
-		LoginTime:     utils.NewCustomTimeFromNow(),
-		HeartbeatTime: utils.NewCustomTimeFromNow(),
-		LogoutTime:    utils.NewCustomTimeFromNow(),
-		IsLogout:      1,
-		DeviceInfo:    "设备信息1",
-	}
-
-	err := common.Db.Create(&model).Error
+func GetIndex(c *gin.Context) {
+	temp, err := template.ParseFiles("index.html", "views/chat/head.html")
 	if err != nil {
-		err = nil
-		return
+		panic(err)
 	}
-
-	ctx.JSON(200, gin.H{
-		"message": "get index",
-	})
+	temp.Execute(c.Writer, "index")
+	// c.JSON(200, gin.H{
+	// 	"message": "welcome !!  ",
+	// })
 }
 
-// @Tags 目录名称
-// @Summary 接口名称CheckTest
-// @Schemes
-// @Description 接口说明CheckTest
-// @Accept json
-// @Produce json
-// @Router /checkTest [get]
-// @Param authorization header string true "Token"
-// @Param x-applet-type header string true "小程序类型"
-// @Param data body model.LoginRequest true "请求参数  @Param [参数名] [参数类型=> query: 路劲后参数,header: header头参数 ,body: json参数,formData: 表单参数] [数据类型] [是否必填] [描述信息(可选)]"
-// @Success 200 {object} common.Response
-// @Failure 400  {string} common.Response
-func CheckTest(c *gin.Context) {
-	var req model.LoginRequest
+func ToRegister(c *gin.Context) {
+	temp, err := template.ParseFiles("views/user/register.html")
+	if err != nil {
+		panic(err)
+	}
+	temp.Execute(c.Writer, "register")
+	// c.JSON(200, gin.H{
+	// 	"message": "welcome !!  ",
+	// })
+}
+
+func ToChat(c *gin.Context) {
+	temp, err := template.ParseFiles("views/chat/index.html",
+		"views/chat/head.html",
+		"views/chat/foot.html",
+		"views/chat/tabmenu.html",
+		"views/chat/concat.html",
+		"views/chat/group.html",
+		"views/chat/profile.html",
+		"views/chat/createcom.html",
+		"views/chat/userinfo.html",
+		"views/chat/main.html")
+	if err != nil {
+		panic(err)
+	}
+	userId, _ := strconv.Atoi(c.Query("userId"))
+	token := c.Query("token")
+	user := models.UserBasic{}
+	user.ID = uint(userId)
+	user.Identity = token
+	//fmt.Println("ToChat>>>>>>>>", user)
+	temp.Execute(c.Writer, user)
+	// c.JSON(200, gin.H{
+	// 	"message": "welcome !!  ",
+	// })
+}
+
+func Chat(c *gin.Context) {
+	var req model.SendMessagesRequest
 	if err := common.ValidateQueryRequest(c, &req); err != nil {
 		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	// 业务逻辑处理...
-	common.SuccessResponse(c, req)
+	models.Chat(c.Writer, c.Request, req)
 }

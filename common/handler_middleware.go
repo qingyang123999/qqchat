@@ -40,17 +40,17 @@ func ErrorHandlerMiddleware() gin.HandlerFunc {
 				// 根据错误类型进行分类处理
 				switch e := err.(type) {
 				case *ValidationError:
-					ErrorResponse(c, http.StatusBadRequest, e.Message)
+					ErrorHttpResponse(c, http.StatusBadRequest, e.Message)
 				case *BusinessError:
-					ErrorResponse(c, e.Code, e.Message)
+					ErrorHttpResponse(c, e.Code, e.Message)
 				case *DatabaseError:
-					ErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("数据库错误: %s", e.Message))
+					ErrorHttpResponse(c, http.StatusInternalServerError, fmt.Sprintf("数据库错误: %s", e.Message))
 				case error:
 					// 处理其他标准错误类型
-					ErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("服务错误: %s", e.Error()))
+					ErrorHttpResponse(c, http.StatusInternalServerError, fmt.Sprintf("服务错误: %s", e.Error()))
 				default:
 					// 处理未知类型错误
-					ErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("服务错误: %v", err))
+					ErrorHttpResponse(c, http.StatusInternalServerError, fmt.Sprintf("服务错误: %v", err))
 				}
 			}
 		}()
@@ -68,7 +68,7 @@ func ErrorHandlerMiddleware() gin.HandlerFunc {
 
 			// 返回最后一个错误给客户端
 			lastErr := c.Errors.Last()
-			ErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("请求处理失败: %s", lastErr.Error()))
+			ErrorHttpResponse(c, http.StatusInternalServerError, fmt.Sprintf("请求处理失败: %s", lastErr.Error()))
 		}
 	}
 }

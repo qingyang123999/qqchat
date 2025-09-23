@@ -286,7 +286,7 @@ func (ub *UserBasic) DeleteUser(c *gin.Context, req *model.UserIdRequest) (err e
 func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, token string) {
 	var user UserBasic
 	var result *gorm.DB
-	result = common.Db.Where("phone = ?", req.Username).Or("username = ?", req.Username).First(&user)
+	result = common.Db.Where("phone = ?", req.Username).WithContext(c).Or("username = ?", req.Username).First(&user)
 
 	// 检查用户是否存在
 	if result.Error != nil {
@@ -316,6 +316,41 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 	}
 
 	return nil, token
+}
+
+// 登录 通过手机号 或者用户名
+func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginRequest) (err error, token string, userInfo UserBasic) {
+	var result *gorm.DB
+	result = common.Db.Where("phone = ?", req.Username).WithContext(c).Or("username = ?", req.Username).First(&userInfo)
+
+	// 检查用户是否存在
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("用户不存在"), "", UserBasic{}
+		}
+		return result.Error, "", userInfo
+	}
+
+	// 验证密码是否正确
+	if !utils.VerifyPasswordHash(userInfo.Password, req.Password) {
+		return fmt.Errorf("密码错误"), "", UserBasic{}
+	}
+
+	// 生成JWT Token 过期时间24小时 将用户信息写入token中
+	token, err = common.GenerateJwtToken(&common.ContextUserBasic{
+		ID:         userInfo.ID,
+		Username:   userInfo.Username,
+		Phone:      userInfo.Phone,
+		Email:      userInfo.Email,
+		ClientPort: userInfo.ClientPort,
+		ClientIP:   userInfo.ClientIP,
+		Identity:   userInfo.Identity,
+	}, viper.GetString("Jwt.key"), time.Duration(viper.GetInt("Jwt.expiresIn"))*time.Second)
+	if err != nil {
+		return fmt.Errorf("生成token失败: %v", err), "", UserBasic{}
+	}
+
+	return nil, token, userInfo
 }
 
 type AAAA struct {
