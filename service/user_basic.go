@@ -199,25 +199,30 @@ func (ub *UserBasic) Login(c *gin.Context) {
 // @Produce json
 // @Router /api/users/user_basic/findUserByNameAndPwd [post]
 // @Param x-applet-type header string true "小程序类型"
-// @Param data body model.LoginRequest true "请求参数"
+// @Param data body model.LoginRequest1 true "请求参数"
 // @Success 200 {object} common.Response
 // @Failure 400  {string} common.Response
 func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context) {
-	var req model.LoginRequest
-	if err := common.ValidateJSONRequest(c, &req); err != nil {
-		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+	var req model.LoginRequest1
+	if err := common.ValidateRequest(c, &req); err != nil {
+		common.ErrorResponse(c, -1, err.Error())
 		return
 	}
 
 	err, token, userInfo := models.UserBasicModel.FindUserByNameAndPwd(c, &req)
 	if err != nil {
-		common.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		common.ErrorResponse(c, -1, err.Error())
 		return
 	}
 
 	// 业务逻辑处理...
-	common.SuccessResponse(c, gin.H{
-		"token":    token,
-		"userInfo": userInfo,
+	common.SuccessResponse(c, struct {
+		Identity string `json:"Identity"`
+		ID       uint   `json:"Id"`
+		models.UserBasic
+	}{
+		Identity:  token,
+		ID:        userInfo.ID,
+		UserBasic: userInfo,
 	})
 }

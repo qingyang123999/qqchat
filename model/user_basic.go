@@ -1,8 +1,13 @@
 package model
 
 type LoginRequest struct {
-	Username string `json:"username" binding:"required,min=2,max=20"`
-	Password string `json:"password" binding:"required,min=8"`
+	Username string `json:"username" form:"username"  binding:"required,min=2,max=20"`
+	Password string `json:"password" form:"password" binding:"required,min=8"`
+}
+
+type LoginRequest1 struct {
+	Name     string `json:"name"       form:"name"  binding:"required,min=2,max=20"`
+	Password string `json:"password"   form:"password"  binding:"required,min=8"`
 }
 
 type CreateUserRequest struct {

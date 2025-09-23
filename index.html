@@ -45,11 +45,24 @@
             login:function(){
                 //检测手机号是否正确
                 console.log("login")
+                console.log(this.user)
+                //检测密码是否为空
+                if (!this.user.name) {
+                    mui.toast("请输入用户名")
+                    return
+                }
+                if (!this.user.password) {
+                    mui.toast("请输入密码")
+                    return
+                }
                 //检测密码是否为空
 
                 //网络请求
                 //封装了promis
-                util.post("/api/users/user_basic/findUserByNameAndPwd",this.user).then(res=>{
+                util.post("/api/users/user_basic/findUserByNameAndPwd",{
+                    name: this.user.name,
+                    password: this.user.password
+                }).then(res=>{
                     console.log(res)
                     if(res.code!=0){
                         mui.toast(res.message)

@@ -29,7 +29,7 @@ func NewValidationError(message string) *ValidationError {
 	return &ValidationError{Message: message}
 }
 
-// ValidateRequest 校验表单请求参数  ShouldBind 方式
+// ValidateRequest 校验表单请求参数  ShouldBind 方式     传参时表单结构体要这么写   Name     string `form:"name"`
 func ValidateRequest(c *gin.Context, req interface{}) error {
 	if err := c.ShouldBind(req); err != nil {
 		return translateValidationErrors(err)
@@ -37,7 +37,7 @@ func ValidateRequest(c *gin.Context, req interface{}) error {
 	return nil
 }
 
-// ValidateJSONRequest  校验JSON请求参数  ShouldBindJSON方式
+// ValidateJSONRequest  校验JSON请求参数  ShouldBindJSON方式     传参时json结构体这么写  Name     string `json:"name"`
 func ValidateJSONRequest(c *gin.Context, req interface{}) error {
 	if err := c.ShouldBindJSON(req); err != nil {
 		return translateValidationErrors(err)

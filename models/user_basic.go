@@ -319,9 +319,9 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 }
 
 // 登录 通过手机号 或者用户名
-func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginRequest) (err error, token string, userInfo UserBasic) {
+func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginRequest1) (err error, token string, userInfo UserBasic) {
 	var result *gorm.DB
-	result = common.Db.Where("phone = ?", req.Username).WithContext(c).Or("username = ?", req.Username).First(&userInfo)
+	result = common.Db.Where("phone = ?", req.Name).WithContext(c).Or("username = ?", req.Name).First(&userInfo)
 
 	// 检查用户是否存在
 	if result.Error != nil {
