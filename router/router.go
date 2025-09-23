@@ -13,6 +13,11 @@ import (
 func Router() *gin.Engine {
 	router := gin.Default()
 
+	//静态资源
+	router.Static("/asset", "asset/")
+	router.StaticFile("/favicon.ico", "asset/images/favicon.ico")
+	router.LoadHTMLGlob("views/**/*")
+
 	// 注册中间件
 	router.Use(qqlog.LoggerMiddleware())        // 日志中间件
 	router.Use(common.ErrorHandlerMiddleware()) //全局错误处理中间件
