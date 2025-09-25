@@ -48,6 +48,8 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 			return err
 		}
 		loginTime = utils.CustomTime{Time: parsedTime}
+	} else {
+		loginTime = utils.CustomTime{Time: time.Now()}
 	}
 
 	if req.HeartbeatTime != "" {
@@ -56,6 +58,8 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 			return err
 		}
 		heartbeatTime = utils.CustomTime{Time: parsedTime}
+	} else {
+		heartbeatTime = utils.CustomTime{Time: time.Now()}
 	}
 
 	if req.LogoutTime != "" {
@@ -64,6 +68,8 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 			return err
 		}
 		logoutTime = utils.CustomTime{Time: parsedTime}
+	} else {
+		logoutTime = utils.CustomTime{Time: time.Now()}
 	}
 
 	err, u := ub.GetUsersInfoByName(req.Name)

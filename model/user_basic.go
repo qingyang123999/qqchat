@@ -11,10 +11,10 @@ type LoginRequest1 struct {
 }
 
 type CreateUserRequest struct {
-	Name          string `json:"name"       form:"name"      binding:"required,min=2,max=20,alphanum"`
+	Name          string `json:"name"           form:"name"          binding:"required,min=2,max=20,alphanum"`
 	Password      string `json:"password"       form:"password"      binding:"required,min=8,max=64,containsany=!@#$%^&*"`
-	Phone         string `json:"phone"          form:"phone"         binding:"required,mobile"`
-	Email         string `json:"email"          form:"email"         binding:"required,email"              `
+	Phone         string `json:"phone"          form:"phone"         binding:"omitempty,mobile"`
+	Email         string `json:"email"          form:"email"         binding:"omitempty,email"              `
 	Identity      string `json:"identity"       form:"identity"      binding:"omitempty"                   `
 	ClientIp      string `json:"clientIp"       form:"clientIp"      binding:"omitempty,ip"                `
 	ClientPort    string `json:"clientPort"     form:"clientPort"    binding:"omitempty,numeric"           `
@@ -26,7 +26,7 @@ type CreateUserRequest struct {
 }
 
 type GetUsersListRequest struct {
-	Name          string `json:"name"       form:"name"         binding:"omitempty,min=2,max=20,alphanum"`
+	Name          string `json:"name"           form:"name"         binding:"omitempty,min=2,max=20,alphanum"`
 	Phone         string `json:"phone"          form:"phone"         binding:"omitempty,mobile"`
 	Email         string `json:"email"          form:"email"         binding:"omitempty,email"             `
 	Identity      string `json:"identity"       form:"identity"      binding:"omitempty"                   `

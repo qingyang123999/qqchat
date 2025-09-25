@@ -22,7 +22,10 @@ func Router() *gin.Engine {
 	//首页
 	router.GET("/", service.GetIndex)
 	router.GET("/index", service.GetIndex)
+	router.GET("/toRegister", service.ToRegister)
+	router.GET("/toChat", service.ToChat)
 	router.POST("/api/users/user_basic/findUserByNameAndPwd", service.ApiService.UserBasic.FindUserByNameAndPwd) // 用户登录并获取用户信息
+	router.POST("/user/createUser", service.ApiService.UserBasic.CreateUser)                                     // 创建 =注册
 
 	//   ====================   前后端分离写法    ========================
 	// 注册中间件

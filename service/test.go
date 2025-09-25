@@ -40,7 +40,7 @@ func Helloworld(g *gin.Context) {
 func Index(ctx *gin.Context) {
 
 	model := models.UserBasic{
-		Username:      "tan",
+		Name:          "tan",
 		Password:      "111",
 		Phone:         "15874894579",
 		Email:         "11435345@qq.com",
