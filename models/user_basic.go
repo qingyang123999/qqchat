@@ -133,7 +133,7 @@ func (ub *UserBasic) GetUsersList(c *gin.Context, req *model.GetUsersListRequest
 
 	// 根据请求参数动态构建查询条件
 	if req.Name != "" {
-		query = query.Where("username = ?", req.Name)
+		query = query.Where("name = ?", req.Name)
 	}
 	if req.Phone != "" {
 		query = query.Where("phone = ?", req.Phone)
@@ -183,7 +183,7 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context, req *model.UserIdRequest) (err
 }
 
 func (ub *UserBasic) GetUsersInfoByName(name string) (err error, userInfo UserBasic) {
-	result := common.Db.Where("username=?", name).First(&userInfo)
+	result := common.Db.Where("name=?", name).First(&userInfo)
 	if result.Error != nil {
 		if result.RowsAffected == 0 {
 			return nil, UserBasic{}
@@ -292,7 +292,7 @@ func (ub *UserBasic) DeleteUser(c *gin.Context, req *model.UserIdRequest) (err e
 func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, token string) {
 	var user UserBasic
 	var result *gorm.DB
-	result = common.Db.Where("phone = ?", req.Name).WithContext(c).Or("username = ?", req.Name).First(&user)
+	result = common.Db.Where("phone = ?", req.Name).WithContext(c).Or("name = ?", req.Name).First(&user)
 
 	// 检查用户是否存在
 	if result.Error != nil {
@@ -327,7 +327,7 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 // 登录 通过手机号 或者用户名
 func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginRequest1) (err error, token string, userInfo UserBasic) {
 	var result *gorm.DB
-	result = common.Db.Where("phone = ?", req.Name).WithContext(c).Or("username = ?", req.Name).First(&userInfo)
+	result = common.Db.Where("phone = ?", req.Name).WithContext(c).Or("name = ?", req.Name).First(&userInfo)
 
 	// 检查用户是否存在
 	if result.Error != nil {
@@ -361,5 +361,5 @@ func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginReques
 
 type AAAA struct {
 	Id   uint64 `gorm:"column:id;size:64"             json:"id"`
-	Name string `gorm:"column:username;size:32"       json:"username"`
+	Name string `gorm:"column:name;size:32"       json:"name"`
 }
