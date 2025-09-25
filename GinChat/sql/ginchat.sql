@@ -11,7 +11,7 @@
  Target Server Version : 80405
  File Encoding         : 65001
 
- Date: 25/09/2025 17:13:20
+ Date: 25/09/2025 17:45:56
 */
 
 SET NAMES utf8mb4;
@@ -26,13 +26,13 @@ CREATE TABLE `communities`  (
   `created_at` datetime(3) NULL DEFAULT NULL,
   `updated_at` datetime(3) NULL DEFAULT NULL,
   `deleted_at` datetime(3) NULL DEFAULT NULL,
-  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `owner_id` bigint UNSIGNED NULL DEFAULT NULL,
-  `img` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '名称',
+  `owner_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '群主id',
+  `img` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '图片',
   `desc` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_communities_deleted_at`(`deleted_at`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '群基础信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of communities
@@ -49,7 +49,7 @@ CREATE TABLE `contact`  (
   `deleted_at` datetime(3) NULL DEFAULT NULL,
   `owner_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '谁的信息',
   `target_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '关联谁',
-  `type` bigint NULL DEFAULT NULL COMMENT '对应的类型 ',
+  `type` bigint NULL DEFAULT NULL COMMENT '对应的类型 1:好友【目标人】   2：群关系【目标群】',
   `desc` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_contact_deleted_at`(`deleted_at`) USING BTREE
@@ -57,28 +57,6 @@ CREATE TABLE `contact`  (
 
 -- ----------------------------
 -- Records of contact
--- ----------------------------
-
--- ----------------------------
--- Table structure for group_basic
--- ----------------------------
-DROP TABLE IF EXISTS `group_basic`;
-CREATE TABLE `group_basic`  (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `created_at` datetime(3) NULL DEFAULT NULL,
-  `updated_at` datetime(3) NULL DEFAULT NULL,
-  `deleted_at` datetime(3) NULL DEFAULT NULL,
-  `name` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '群名称',
-  `owner_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '群主id',
-  `icon` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '图片',
-  `type` bigint NULL DEFAULT NULL COMMENT '类型',
-  `desc` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL COMMENT '描述',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_group_basic_deleted_at`(`deleted_at`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci COMMENT = '群' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of group_basic
 -- ----------------------------
 
 -- ----------------------------
