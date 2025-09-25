@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"qqchat/common"
@@ -216,15 +217,16 @@ func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context) {
 		common.ErrorResponse(c, -1, err.Error())
 		return
 	}
+	fmt.Println("==================================================================", userInfo)
 
 	// 业务逻辑处理...
 	common.SuccessResponse(c, struct {
-		Identity string `json:"Identity"`
-		ID       uint   `json:"Id"`
+		Identity string
+		ID       uint
 		models.UserBasic
 	}{
 		Identity:  token,
-		ID:        userInfo.ID,
+		ID:        userInfo.Id,
 		UserBasic: userInfo,
 	})
 }

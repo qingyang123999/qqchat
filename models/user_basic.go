@@ -16,7 +16,7 @@ var UserBasicModel = UserBasic{}
 
 type UserBasic struct {
 	gorm.Model
-	ID            uint             `gorm:"primaryKey;column:id;size:64"  json:"id"`
+	Id            uint             `gorm:"primaryKey;column:id;size:64"  json:"id"`
 	Name          string           `gorm:"column:name;size:32"           json:"name"`
 	Password      string           `gorm:"column:password;size:64"       json:"password"`
 	Phone         string           `gorm:"column:phone;size:64"          json:"phone"`
