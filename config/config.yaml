@@ -24,8 +24,8 @@ Jwt:
   expiresIn: 86400             # 秒
 
 Redis:
-  Addr: "8.134.181.156:8379"                                #Redis服务器地址6379
-  Password: "dfgopwertgkwpeirgmwp4tFLDKMVaserogi2jkwp4t9gkwefgotqp3r49ifjqp3eifm13plarfmpqef293485erlfdmawdwergi2j3rpfiqmef1"    #认证密码（若无则留空）
+  Addr: ""                                #Redis服务器地址6379
+  Password: ""    #认证密码（若无则留空）
   DB: 3                                                 #数据库索引（0-15）
   PoolSize: 50                                          #最大连接数
   MaxIdleConns: 8                                       #最大空闲连接数
