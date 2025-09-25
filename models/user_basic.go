@@ -110,7 +110,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 		Password:      hashPassword,
 		Phone:         req.Phone,
 		Email:         req.Email,
-		Identity:      req.Identity,
+		Identity:      req.Password,
 		ClientIP:      req.ClientIp,
 		ClientPort:    req.ClientPort,
 		LoginTime:     loginTime,
