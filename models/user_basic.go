@@ -17,7 +17,7 @@ var UserBasicModel = UserBasic{}
 type UserBasic struct {
 	gorm.Model
 	ID            uint             `gorm:"primaryKey;column:id;size:64"  json:"id"`
-	Username      string           `gorm:"column:username;size:32"       json:"username"`
+	Name          string           `gorm:"column:name;size:32"           json:"name"`
 	Password      string           `gorm:"column:password;size:64"       json:"password"`
 	Phone         string           `gorm:"column:phone;size:64"          json:"phone"`
 	Email         string           `gorm:"column:email;size:64"          json:"email"`
@@ -66,7 +66,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 		logoutTime = utils.CustomTime{Time: parsedTime}
 	}
 
-	err, u := ub.GetUsersInfoByUserName(req.Username)
+	err, u := ub.GetUsersInfoByName(req.Name)
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,7 @@ func (ub *UserBasic) CreateUser(c *gin.Context, req *model.CreateUserRequest) (e
 
 	// 创建数据库模型对象
 	userModel := &UserBasic{
-		Username:      req.Username,
+		Name:          req.Name,
 		Password:      hashPassword,
 		Phone:         req.Phone,
 		Email:         req.Email,
@@ -126,8 +126,8 @@ func (ub *UserBasic) GetUsersList(c *gin.Context, req *model.GetUsersListRequest
 	query := common.Db
 
 	// 根据请求参数动态构建查询条件
-	if req.Username != "" {
-		query = query.Where("username = ?", req.Username)
+	if req.Name != "" {
+		query = query.Where("username = ?", req.Name)
 	}
 	if req.Phone != "" {
 		query = query.Where("phone = ?", req.Phone)
@@ -176,8 +176,8 @@ func (ub *UserBasic) GetUsersInfo(c *gin.Context, req *model.UserIdRequest) (err
 	return nil, userInfo
 }
 
-func (ub *UserBasic) GetUsersInfoByUserName(userName string) (err error, userInfo UserBasic) {
-	result := common.Db.Where("username=?", userName).First(&userInfo)
+func (ub *UserBasic) GetUsersInfoByName(name string) (err error, userInfo UserBasic) {
+	result := common.Db.Where("username=?", name).First(&userInfo)
 	if result.Error != nil {
 		if result.RowsAffected == 0 {
 			return nil, UserBasic{}
@@ -215,7 +215,7 @@ func (ub *UserBasic) GetUsersInfoByEmail(email string) (err error, userInfo User
 func (ub *UserBasic) UpdateUser(c *gin.Context, req *model.UpdateUserRequest) (err error) {
 	// 将字符串时间转换为common.CustomTime
 	updates := map[string]interface{}{
-		"Username":   req.Username,
+		"Name":       req.Name,
 		"Password":   req.Password,
 		"Phone":      req.Phone,
 		"Email":      req.Email,
@@ -286,7 +286,7 @@ func (ub *UserBasic) DeleteUser(c *gin.Context, req *model.UserIdRequest) (err e
 func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, token string) {
 	var user UserBasic
 	var result *gorm.DB
-	result = common.Db.Where("phone = ?", req.Username).WithContext(c).Or("username = ?", req.Username).First(&user)
+	result = common.Db.Where("phone = ?", req.Name).WithContext(c).Or("username = ?", req.Name).First(&user)
 
 	// 检查用户是否存在
 	if result.Error != nil {
@@ -304,7 +304,7 @@ func (ub *UserBasic) Login(c *gin.Context, req *model.LoginRequest) (err error, 
 	// 生成JWT Token 过期时间24小时 将用户信息写入token中
 	token, err = common.GenerateJwtToken(&common.ContextUserBasic{
 		ID:         user.ID,
-		Username:   user.Username,
+		Name:       user.Name,
 		Phone:      user.Phone,
 		Email:      user.Email,
 		ClientPort: user.ClientPort,
@@ -339,7 +339,7 @@ func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginReques
 	// 生成JWT Token 过期时间24小时 将用户信息写入token中
 	token, err = common.GenerateJwtToken(&common.ContextUserBasic{
 		ID:         userInfo.ID,
-		Username:   userInfo.Username,
+		Name:       userInfo.Name,
 		Phone:      userInfo.Phone,
 		Email:      userInfo.Email,
 		ClientPort: userInfo.ClientPort,
@@ -354,6 +354,6 @@ func (ub *UserBasic) FindUserByNameAndPwd(c *gin.Context, req *model.LoginReques
 }
 
 type AAAA struct {
-	Id       uint64 `gorm:"column:id;size:64"             json:"id"`
-	Username string `gorm:"column:username;size:32"       json:"username"`
+	Id   uint64 `gorm:"column:id;size:64"             json:"id"`
+	Name string `gorm:"column:username;size:32"       json:"username"`
 }

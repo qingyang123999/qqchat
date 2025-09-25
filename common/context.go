@@ -7,7 +7,7 @@ import (
 
 type ContextUserBasic struct {
 	ID         uint   `json:"id"`
-	Username   string `json:"username"`
+	Name       string `json:"name"`
 	Phone      string `json:"phone"`
 	Email      string `json:"email"`
 	Identity   string `json:"identity"`

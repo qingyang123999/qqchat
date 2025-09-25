@@ -1,17 +1,17 @@
 package model
 
 type LoginRequest struct {
-	Username string `json:"username" form:"username"  binding:"required,min=2,max=20"`
-	Password string `json:"password" form:"password" binding:"required,min=8"`
+	Name     string `json:"name" form:"name"  binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
 
 type LoginRequest1 struct {
-	Name     string `json:"name"       form:"name"  binding:"required,min=2,max=20"`
-	Password string `json:"password"   form:"password"  binding:"required,min=8"`
+	Name     string `json:"name"       form:"name"  binding:"required"`
+	Password string `json:"password"   form:"password"  binding:"required"`
 }
 
 type CreateUserRequest struct {
-	Username      string `json:"username"       form:"username"      binding:"required,min=2,max=20,alphanum"`
+	Name          string `json:"name"       form:"name"      binding:"required,min=2,max=20,alphanum"`
 	Password      string `json:"password"       form:"password"      binding:"required,min=8,max=64,containsany=!@#$%^&*"`
 	Phone         string `json:"phone"          form:"phone"         binding:"required,mobile"`
 	Email         string `json:"email"          form:"email"         binding:"required,email"              `
@@ -26,7 +26,7 @@ type CreateUserRequest struct {
 }
 
 type GetUsersListRequest struct {
-	Username      string `json:"username"       form:"username"         binding:"omitempty,min=2,max=20,alphanum"`
+	Name          string `json:"name"       form:"name"         binding:"omitempty,min=2,max=20,alphanum"`
 	Phone         string `json:"phone"          form:"phone"         binding:"omitempty,mobile"`
 	Email         string `json:"email"          form:"email"         binding:"omitempty,email"             `
 	Identity      string `json:"identity"       form:"identity"      binding:"omitempty"                   `
@@ -44,7 +44,7 @@ type UserIdRequest struct {
 }
 type UpdateUserRequest struct {
 	ID            uint64 `json:"id"             form:"id"            binding:"required"`
-	Username      string `json:"username"       form:"username"      binding:"omitempty,min=2,max=20,alphanum"`
+	Name          string `json:"name"           form:"name"          binding:"omitempty,min=2,max=20,alphanum"`
 	Password      string `json:"password"       form:"password"      binding:"omitempty,min=8,max=64,containsany=!@#$%^&*"`
 	Phone         string `json:"phone"          form:"phone"         binding:"omitempty,mobile"`
 	Email         string `json:"email"          form:"email"         binding:"omitempty,email"              `

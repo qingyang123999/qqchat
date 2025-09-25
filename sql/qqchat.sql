@@ -11,7 +11,7 @@
  Target Server Version : 80405
  File Encoding         : 65001
 
- Date: 03/09/2025 18:01:13
+ Date: 25/09/2025 13:52:57
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `contact`  (
   `type` int UNSIGNED NOT NULL COMMENT '对应的类型 ',
   `desc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人员关系' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '人员关系' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of contact
@@ -63,7 +63,7 @@ CREATE TABLE `messages`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `form_id` int UNSIGNED NULL DEFAULT NULL COMMENT '发送者',
   `target_id` int UNSIGNED NULL DEFAULT NULL COMMENT '接收者',
-  `type` int UNSIGNED NULL DEFAULT NULL COMMENT '消息类型  群聊  私聊  广播',
+  `type` int UNSIGNED NULL DEFAULT NULL COMMENT '发送类型  ',
   `media` int NULL DEFAULT NULL COMMENT '消息类型 文字  图片  音频',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
   `pic` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片',
@@ -86,7 +86,7 @@ CREATE TABLE `messages`  (
 DROP TABLE IF EXISTS `user_basic`;
 CREATE TABLE `user_basic`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `password` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `email` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -102,11 +102,11 @@ CREATE TABLE `user_basic`  (
   `updated_at` datetime NULL DEFAULT NULL,
   `deleted_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_basic
 -- ----------------------------
-INSERT INTO `user_basic` VALUES (37, 'hanxia', '$2a$10$NVnslx4B8XVl8RnXc7cMmuxX/bOo3ju61V.DwUCAvyWVGn6vstmTW', '18174918548', 'g.sirdizbt@qq.com', '94', '186.84.86.178', '80', '2011-12-19 12:08:39', '1976-06-21 05:47:45', '1995-02-12 10:04:39', 0, 'mollit cupidatat est sunt', '2025-09-03 18:00:39', '2025-09-03 18:00:39', NULL);
+INSERT INTO `user_basic` VALUES (37, 'hanxia', '$2a$10$NVnslx4B8XVl8RnXc7cMmuxX/bOo3ju61V.DwUCAvyWVGn6vstmTW', '18174918548', 'g.sirdizbt@qq.com', '@11111111', '186.84.86.178', '80', '2011-12-19 12:08:39', '1976-06-21 05:47:45', '1995-02-12 10:04:39', 0, 'mollit cupidatat est sunt', '2025-09-03 18:00:39', '2025-09-03 18:00:39', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
